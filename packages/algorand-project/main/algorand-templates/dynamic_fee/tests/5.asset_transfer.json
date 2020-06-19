@@ -1,0 +1,28 @@
+{
+  "name": "transfer asset",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "asset-opt-in",
+      "params": {
+        "assetId": 9703094,
+        "to": "Bob"
+      },
+      "signers": [
+        "Bob"
+      ]
+    },
+    {
+      "type": "asset-transfer",
+      "params": {
+        "assetId": 9703094,
+        "from": "Alice",
+        "to": "Bob",
+        "amount": 10
+      },
+      "signers": [
+        "Alice"
+      ]
+    }
+  ]
+}

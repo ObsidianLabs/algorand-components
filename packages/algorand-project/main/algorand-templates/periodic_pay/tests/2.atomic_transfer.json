@@ -1,0 +1,28 @@
+{
+  "name": "atomic transfer",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "Alice",
+        "to": "Bob",
+        "amount": 1
+      },
+      "signers": [
+        "Alice"
+      ]
+    },
+    {
+      "type": "pay",
+      "params": {
+        "from": "Bob",
+        "to": "Charlie",
+        "amount": 1
+      },
+      "signers": [
+        "Bob"
+      ]
+    }
+  ]
+}

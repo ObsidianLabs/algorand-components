@@ -1,0 +1,18 @@
+{
+  "name": "contract",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "file:../contract.addr",
+        "to": "Alice",
+        "amount": 10
+      },
+      "lsig": {
+        "program": "base64:../contract.teal.tok",
+        "args": []
+      }
+    }
+  ]
+}

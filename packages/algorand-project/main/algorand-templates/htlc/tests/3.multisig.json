@@ -1,0 +1,27 @@
+{
+  "name": "multisig pay",
+  "accounts": [
+    {
+      "name": "MultiSig",
+      "msig": {
+        "version": 1,
+        "threshold": 2,
+        "addrs": ["Alice", "Bob", "Charlie"]
+      }
+    }
+  ],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "MultiSig",
+        "to": "Alice",
+        "amount": 1
+      },
+      "signers": [
+        "Alice",
+        "Bob"
+      ]
+    }
+  ]
+}

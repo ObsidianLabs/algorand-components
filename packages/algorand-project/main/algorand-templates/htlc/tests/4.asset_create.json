@@ -1,0 +1,21 @@
+{
+  "name": "create asset",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "asset-create",
+      "params": {
+        "name": "My Token",
+        "unit": "MT",
+        "total": 100000000,
+        "decimals": 2,
+        "from": "Alice",
+        "manager": "Alice",
+        "url": ""
+      },
+      "signers": [
+        "Alice"
+      ]
+    }
+  ]
+}

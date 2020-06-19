@@ -1,0 +1,16 @@
+{
+  "name": "destroy asset",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "asset-destroy",
+      "params": {
+        "assetId": 9703094,
+        "from": "Alice"
+      },
+      "signers": [
+        "Alice"
+      ]
+    }
+  ]
+}
