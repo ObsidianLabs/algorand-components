@@ -18,7 +18,7 @@ import { IpcChannel } from '@obsidians/ipc'
 
 import actions from '../actions'
 
-export default class NewAlgorandProjectModal extends Component {
+export default class NewProjectModal extends Component {
   constructor (props) {
     super(props)
 
@@ -131,7 +131,7 @@ export default class NewAlgorandProjectModal extends Component {
           <Label>Template</Label>
           <CustomInput
             type='select'
-            id='algorand-settings-template'
+            id='project-template'
             value={this.state.template}
             onChange={event => this.setState({ template: event.target.value })}
           >

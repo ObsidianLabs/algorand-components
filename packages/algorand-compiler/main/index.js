@@ -2,9 +2,9 @@ const { net } = require('electron')
 
 const { IpcChannel } = require('@obsidians/ipc')
 
-class AlgorandPytealManager extends IpcChannel {
+class PytealManager extends IpcChannel {
   constructor () {
-    super('algorand-pyteal')
+    super('pyteal')
   }
 
   async versions () {
@@ -49,4 +49,4 @@ class AlgorandPytealManager extends IpcChannel {
   }
 }
 
-module.exports = AlgorandPytealManager
+module.exports = PytealManager

@@ -8,7 +8,7 @@ import {
 
 import notification from '@obsidians/notification'
 
-import algorandKeypairManager from './algorandKeypairManager'
+import keypairManager from './keypairManager'
 
 import CreateKeypairModal from './CreateKeypairModal'
 import ImportKeypairModal from './ImportKeypairModal'
@@ -37,14 +37,14 @@ export default class KeypairManagerModal extends PureComponent {
 
   async refresh () {
     this.setState({ loading: true })
-    const keypairs = await algorandKeypairManager.loadAllKeypairs()
+    const keypairs = await keypairManager.loadAllKeypairs()
     this.setState({ keypairs, loading: false })
   }
 
   createKeypair = async () => {
     const { name, keypair } = await this.createKeypairModal.current.openModal()
     if (name && keypair) {
-      await algorandKeypairManager.saveKeypair(name, keypair)
+      await keypairManager.saveKeypair(name, keypair)
       await this.refresh()
     }
   }
@@ -52,16 +52,16 @@ export default class KeypairManagerModal extends PureComponent {
   importKeypair = async () => {
     const { name, keypair } = await this.importKeypairModal.current.openModal()
     if (name && keypair) {
-      await algorandKeypairManager.saveKeypair(name, keypair)
+      await keypairManager.saveKeypair(name, keypair)
       await this.refresh()
     }
   }
 
   deleteKey = async keypair => {
-    await algorandKeypairManager.deleteKeypair(keypair)
+    await keypairManager.deleteKeypair(keypair)
     notification.info(
       'Delete Keypair Successful',
-      `The keypair is removed from Algorand IDE.`
+      `The keypair is removed from Algorand Studio.`
     )
     this.refresh()
   }
@@ -91,7 +91,7 @@ export default class KeypairManagerModal extends PureComponent {
   editName = async keypair => {
     const newName = await this.keypairNameModal.current.openModal(keypair.name)
     if (newName) {
-      algorandKeypairManager.updateKeypairName(keypair.addr, newName)
+      keypairManager.updateKeypairName(keypair.addr, newName)
       this.refresh()
     }
   }

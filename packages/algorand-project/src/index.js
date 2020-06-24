@@ -1,8 +1,8 @@
 import React from 'react'
 
-import AlgorandProject from './AlgorandProject'
+import Project from './Project'
 
-export { default as projectManager } from './algorandProjectManager'
+export { default as projectManager } from './projectManager'
 export { default as TerminalButton } from './TerminalButton'
 
 export { default as NewProjectModal } from './components/NewProjectModal'
@@ -16,7 +16,7 @@ export { default as redux } from './redux'
 export default function (props) {
   return (
     <React.Fragment>
-      <AlgorandProject {...props} />
+      <Project {...props} />
     </React.Fragment>
   )
 }

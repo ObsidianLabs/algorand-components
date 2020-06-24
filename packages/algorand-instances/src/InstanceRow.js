@@ -5,9 +5,9 @@ import {
   DeleteButton,
 } from '@obsidians/ui-components'
 
-import { AlgorandNodeButton, AlgorandNodeStatus } from '@obsidians/algorand-node'
+import { NodeButton, NodeStatus } from '@obsidians/algorand-node'
 
-import algorandInstancesChannel from './algorandInstancesChannel'
+import instanceChannel from './instanceChannel'
 
 export default class InstanceRow extends PureComponent {
   renderStartStopBtn = (name, version, chain) => {
@@ -15,11 +15,11 @@ export default class InstanceRow extends PureComponent {
       return null
     }
     return (
-      <AlgorandNodeButton
+      <NodeButton
         name={name}
         version={version}
         chain={chain}
-        onLifecycle={(lifecycle, algoNode) => this.props.onNodeLifecycle(name, lifecycle, algoNode)}
+        onLifecycle={(lifecycle, params) => this.props.onNodeLifecycle(name, lifecycle, params)}
       />
     )
   }
@@ -45,11 +45,11 @@ export default class InstanceRow extends PureComponent {
     if (this.props.runningInstance !== name) {
       return null
     }
-    return <AlgorandNodeStatus />
+    return <NodeStatus />
   }
 
   deleteInstance = async name => {
-    await algorandInstancesChannel.invoke('delete', name)
+    await instanceChannel.invoke('delete', name)
     this.props.onRefresh()
   }
 

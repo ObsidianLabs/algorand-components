@@ -1,8 +1,8 @@
-import algorandKeypairManager from './algorandKeypairManager'
+import keypairManager from './keypairManager'
 
 export default function signatureProvider (addr) {
   return async ({ algoTxn, logicSig, raw = false }) => {
-    const sk = await algorandKeypairManager.getSigner(addr)
+    const sk = await keypairManager.getSigner(addr)
     if (logicSig) {
       return logicSig.sign(sk)
     } else if (raw) {

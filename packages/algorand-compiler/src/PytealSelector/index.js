@@ -11,7 +11,7 @@ import {
 } from '@obsidians/ui-components'
 
 import PytealInstaller from './PytealInstaller'
-import algorandCompiler from '../algorandCompiler'
+import compilerManager from '../compilerManager'
 
 export default class PytealSelector extends PureComponent {
   constructor (props) {
@@ -28,7 +28,7 @@ export default class PytealSelector extends PureComponent {
 
   refreshVersions = async () => {
     this.setState({ loading: true })
-    const versions = await algorandCompiler.invoke('versions')
+    const versions = await compilerManager.invoke('versions')
     this.setState({
       installed: versions,
       loading: false,
@@ -39,7 +39,7 @@ export default class PytealSelector extends PureComponent {
   }
 
   deleteCompilerVersion = async version => {
-    await algorandCompiler.invoke('deleteVersion', version)
+    await compilerManager.invoke('deleteVersion', version)
     await this.refreshVersions()
   }
 

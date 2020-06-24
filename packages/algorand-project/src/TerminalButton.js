@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { ToolbarButton } from '@obsidians/ui-components'
 
-import algorandProjectManager from './algorandProjectManager'
+import projectManager from './projectManager'
 
 export default class TerminalButton extends PureComponent {
   state = {
@@ -10,7 +10,7 @@ export default class TerminalButton extends PureComponent {
   }
 
   componentDidMount () {
-    algorandProjectManager.terminalButton = this
+    projectManager.terminalButton = this
   }
 
   render () {
@@ -22,7 +22,7 @@ export default class TerminalButton extends PureComponent {
         size={size}
         icon='fas fa-terminal'
         color={this.state.terminal ? 'primary' : 'default'}
-        onClick={() => algorandProjectManager.toggleTerminal(!this.state.terminal)}
+        onClick={() => projectManager.toggleTerminal(!this.state.terminal)}
       />
     )
   }

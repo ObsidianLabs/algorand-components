@@ -1,5 +1,5 @@
-export { default } from './algorandNode'
+export { default } from './nodeManager'
 
-export { default as AlgorandNodeTerminal } from './AlgorandNodeTerminal'
-export { default as AlgorandNodeButton } from './AlgorandNodeButton'
-export { default as AlgorandNodeStatus } from './AlgorandNodeStatus'
+export { default as NodeTerminal } from './NodeTerminal'
+export { default as NodeButton } from './NodeButton'
+export { default as NodeStatus } from './NodeStatus'

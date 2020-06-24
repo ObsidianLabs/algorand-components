@@ -1,19 +1,19 @@
 import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
-import { AlgorandKeypairButton } from '@obsidians/algorand-keypair'
-import { AlgorandVersionSelector } from '@obsidians/algorand-instances'
+import { KeypairButton } from '@obsidians/algorand-keypair'
+import { NodeVersionSelector } from '@obsidians/algorand-instances'
 import { PytealSelector } from '@obsidians/algorand-compiler'
 import { TerminalButton } from '@obsidians/algorand-project'
 
-export default function AlgorandBottomBar (props) {
+export default function BottomBar (props) {
   return (
     <React.Fragment>
-      <AlgorandKeypairButton>
+      <KeypairButton>
         <div className='btn btn-primary btn-sm btn-flat'>
           <i className='fas fa-key' />
         </div>
-      </AlgorandKeypairButton>
+      </KeypairButton>
       <div className='flex-1' />
       <CacheRoute
         path={`/guest/:project`}
@@ -22,7 +22,7 @@ export default function AlgorandBottomBar (props) {
             return null
           }
           return (
-            <AlgorandVersionSelector
+            <NodeVersionSelector
               selected={props.nodeVersion}
               onSelected={nodeVersion => props.onSelectNodeVersion(nodeVersion)}
             />

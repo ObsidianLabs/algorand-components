@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react'
 import { Card } from '@obsidians/ui-components'
 import notification from '@obsidians/notification'
 
-import AlgorandVersionManager from './AlgorandVersion/AlgorandVersionManager'
+import NodeVersionManager from './NodeInstaller/NodeVersionManager'
 import CreateInstanceButton from './CreateInstanceButton'
 
 import InstanceHeader from './InstanceHeader'
 import InstanceRow from './InstanceRow'
 
-import algorandInstancesChannel from './algorandInstancesChannel'
+import instanceChannel from './instanceChannel'
 
 export default class InstanceList extends PureComponent {
   static defaultProps = {
@@ -38,14 +38,14 @@ export default class InstanceList extends PureComponent {
   }
 
   refreshInstances = async () => {
-    const instances = await algorandInstancesChannel.invoke('list', this.props.chain)
+    const instances = await instanceChannel.invoke('list', this.props.chain)
     this.setState({ instances })
   }
 
-  onNodeLifecycle = (name, lifecycle, algoNode) => {
+  onNodeLifecycle = (name, lifecycle, params) => {
     const runningState = {
       lifecycle,
-      algoNode,
+      params,
       runningInstance: name,
     }
     this.setState(runningState)
@@ -91,7 +91,7 @@ export default class InstanceList extends PureComponent {
         title={`Algorand Instances (${this.props.chain})`}
         right={(
           <React.Fragment>
-            <AlgorandVersionManager
+            <NodeVersionManager
               onRefresh={this.refreshInstances}
             />
             <CreateInstanceButton

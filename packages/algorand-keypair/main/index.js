@@ -2,7 +2,7 @@ const keytar = require('keytar')
 
 const { IpcChannel } = require('@obsidians/ipc')
 
-class CkbKeypairManager extends IpcChannel {
+class KeypairManager extends IpcChannel {
   constructor() {
     super('algorand-keypair')
   }
@@ -33,4 +33,4 @@ class CkbKeypairManager extends IpcChannel {
   }
 }
 
-module.exports = CkbKeypairManager
+module.exports = KeypairManager

@@ -6,7 +6,7 @@ import {
   DebouncedFormGroup,
 } from '@obsidians/ui-components'
 
-import algorandKeypairManager from './algorandKeypairManager'
+import keypairManager from './keypairManager'
 
 export default class CreateKeypairModal extends PureComponent {
   constructor (props) {
@@ -28,7 +28,7 @@ export default class CreateKeypairModal extends PureComponent {
   }
 
   regenerateKeypair = async () => {
-    const keypair = await algorandKeypairManager.newKeypair()
+    const keypair = await keypairManager.newKeypair()
     this.setState({ keypair })
   }
 

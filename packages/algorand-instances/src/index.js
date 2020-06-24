@@ -1,5 +1,5 @@
-export { default } from './algorandInstancesChannel'
+export { default } from './instanceChannel'
 
-export { default as InstanceList } from './AlgorandInstanceList'
-export { default as AlgorandVersionInstaller } from './AlgorandVersion/AlgorandVersionInstaller'
-export { default as AlgorandVersionSelector } from './AlgorandVersion/AlgorandVersionSelector'
+export { default as InstanceList } from './InstanceListWithTerminal'
+export { default as NodeVersionInstaller } from './NodeInstaller/NodeVersionInstaller'
+export { default as NodeVersionSelector } from './NodeInstaller/NodeVersionSelector'

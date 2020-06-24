@@ -24,7 +24,7 @@ const copyRecursiveSync = (src, dest, name) => {
   }
 }
 
-class AlgorandProjectChannel extends IpcChannel {
+class ProjectChannel extends IpcChannel {
   constructor () {
     super('algorand-project')
   }
@@ -41,4 +41,4 @@ class AlgorandProjectChannel extends IpcChannel {
   }
 }
 
-module.exports = AlgorandProjectChannel
+module.exports = ProjectChannel

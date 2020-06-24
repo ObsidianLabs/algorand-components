@@ -6,8 +6,8 @@ import {
 
 import fileOps from '@obsidians/file-ops'
 
-import algorandInstances, { AlgorandVersionInstaller } from '@obsidians/algorand-instances'
-import algorandCompiler, { PytealInstaller } from '@obsidians/algorand-compiler'
+import instanceManager, { NodeVersionInstaller } from '@obsidians/algorand-instances'
+import compilerManager, { PytealInstaller } from '@obsidians/algorand-compiler'
 
 import ListItemDocker from './ListItemDocker'
 import DockerImageItem from './DockerImageItem'
@@ -20,8 +20,8 @@ export default class Welcome extends PureComponent {
       ready: false
     }
     this.listItemDocker = React.createRef()
-    this.listItemAlgorandNode = React.createRef()
-    this.listItemAlgorandCompiler = React.createRef()
+    this.listItemNode = React.createRef()
+    this.listItemCompiler = React.createRef()
   }
 
   componentDidMount () {
@@ -38,8 +38,8 @@ export default class Welcome extends PureComponent {
   refresh = async () => {
     if (this.mounted) {
       this.listItemDocker.current.refresh()
-      this.listItemAlgorandNode.current.refresh()
-      this.listItemAlgorandCompiler.current.refresh()
+      this.listItemNode.current.refresh()
+      this.listItemCompiler.current.refresh()
       const ready = await checkDependencies()
       this.setState({ ready })
     }
@@ -63,20 +63,20 @@ export default class Welcome extends PureComponent {
                 onStartedDocker={this.refresh}
               />
               <DockerImageItem
-                ref={this.listItemAlgorandNode}
+                ref={this.listItemNode}
                 title='Algorand Node'
                 subtitle='The main software that runs Algorand node and compiles Teal scripts.'
                 link='https://hub.docker.com/r/algorand/stable'
-                getVersions={() => algorandInstances.invoke('versions')}
-                Installer={AlgorandVersionInstaller}
+                getVersions={() => instanceManager.invoke('versions')}
+                Installer={NodeVersionInstaller}
                 onInstalled={this.refresh}
               />
               <DockerImageItem
-                ref={this.listItemAlgorandCompiler}
+                ref={this.listItemCompiler}
                 title='PyTeal Compiler'
                 subtitle='PyTeal compiler is required to compile PyTeal to Teal.'
                 link='https://hub.docker.com/r/obsidians/pyteal'
-                getVersions={() => algorandCompiler.invoke('versions')}
+                getVersions={() => compilerManager.invoke('versions')}
                 Installer={PytealInstaller}
                 onInstalled={this.refresh}
               />

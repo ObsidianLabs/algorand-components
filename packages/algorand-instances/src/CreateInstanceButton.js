@@ -9,10 +9,10 @@ import {
   CustomInput,
 } from '@obsidians/ui-components'
 
-import algorandKeypair from '@obsidians/algorand-keypair'
+import keypairManager from '@obsidians/algorand-keypair'
 import Terminal from '@obsidians/terminal'
 
-import algorandInstancesChannel from './algorandInstancesChannel'
+import instanceChannel from './instanceChannel'
 
 export default class CreateInstanceButton extends PureComponent {
   constructor (props) {
@@ -20,10 +20,10 @@ export default class CreateInstanceButton extends PureComponent {
 
     this.state = {
       loading: false,
-      algorandVersions: [],
+      versions: [],
       keypairs: [],
       name: '',
-      version: '',
+      selected: '',
       addr: '',
       creating: false,
     }
@@ -38,13 +38,13 @@ export default class CreateInstanceButton extends PureComponent {
 
   refresh = async () => {
     this.setState({ loading: true })
-    const algorandVersions = await algorandInstancesChannel.invoke('versions')
-    const keypairs = await algorandKeypair.loadAllKeypairs()
+    const versions = await instanceChannel.invoke('versions')
+    const keypairs = await keypairManager.loadAllKeypairs()
     this.setState({
-      algorandVersions,
+      versions,
       loading: false,
       keypairs,
-      version: algorandVersions[0] ? algorandVersions[0].Tag : '',
+      selected: versions[0] ? versions[0].Tag : '',
       addr: keypairs[0] ? keypairs[0].addr : '',
     })
   }
@@ -66,9 +66,9 @@ export default class CreateInstanceButton extends PureComponent {
       await this.terminal.current.exec(`curl ${snapshot} -o latest.tar.gz`, { cwd: '/tmp/algorand-snapshot' })
     }
 
-    await algorandInstancesChannel.invoke('create', {
+    await instanceChannel.invoke('create', {
       name: this.state.name,
-      version: this.state.version,
+      version: this.state.selected,
       address: this.state.addr,
       chain: this.props.chain,
     })
@@ -82,11 +82,11 @@ export default class CreateInstanceButton extends PureComponent {
       return 'Loading'
     }
 
-    if (!this.state.algorandVersions.length) {
+    if (!this.state.versions.length) {
       return <option disabled key='' value=''>(No Algorand installed)</option>
     }
 
-    return this.state.algorandVersions.map(v => <option key={v.Tag} value={v.Tag}>{v.Tag}</option>)
+    return this.state.versions.map(v => <option key={v.Tag} value={v.Tag}>{v.Tag}</option>)
   }
 
   renderAddrInput = () => {
@@ -124,7 +124,7 @@ export default class CreateInstanceButton extends PureComponent {
     return (
       <React.Fragment>
         <Button
-          key='algorand-new-instance'
+          key='new-instance'
           color='success'
           className={this.props.className}
           onClick={this.onClickButton}
@@ -138,7 +138,7 @@ export default class CreateInstanceButton extends PureComponent {
           textConfirm='Create'
           onConfirm={this.onCreateInstance}
           pending={this.state.creating}
-          confirmDisabled={!this.state.name || !this.state.version}
+          confirmDisabled={!this.state.name || !this.state.selected}
         >
           <DebouncedFormGroup
             label='Instance name'
@@ -152,8 +152,8 @@ export default class CreateInstanceButton extends PureComponent {
             <CustomInput
               type='select'
               className='form-control'
-              value={this.state.version}
-              onChange={event => this.setState({ version: event.target.value })}
+              value={this.state.selected}
+              onChange={event => this.setState({ selected: event.target.value })}
             >
               {this.renderAlgorandVersionOptions()}
             </CustomInput>

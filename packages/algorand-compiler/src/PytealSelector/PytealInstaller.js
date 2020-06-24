@@ -10,7 +10,7 @@ import {
 
 import Terminal from '@obsidians/terminal'
 
-import algorandCompiler from '../algorandCompiler'
+import compilerManager from '../compilerManager'
 
 export default class PytealInstaller extends PureComponent {
   constructor (props) {
@@ -33,7 +33,7 @@ export default class PytealInstaller extends PureComponent {
     this.setState({ loading: true })
     let versions
     try {
-      versions = await algorandCompiler.invoke('pytealVersions', 10)
+      versions = await compilerManager.invoke('pytealVersions', 10)
     } catch (e) {
       this.setState({ loading: false })
       console.warn(e)

@@ -1,1 +1,1 @@
-exports.AlgorandInstanceManager = require('./AlgorandInstanceManager')
+exports.InstanceManager = require('./InstanceManager')
