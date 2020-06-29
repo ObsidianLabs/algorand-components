@@ -21,8 +21,7 @@
     "@obsidians/ipc": "^0.1.1",
     "@obsidians/notification": "^0.1.0",
     "@obsidians/terminal": "^0.1.1",
-    "@obsidians/ui-components": "^0.1.0",
-    "algosdk": "^1.6.1"
+    "@obsidians/ui-components": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -43,6 +42,7 @@
     "rollup-plugin-postcss": "^2.3.0"
   },
   "peerDependencies": {
+    "algosdk": "^1.6.1",
     "electron": "^8.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
