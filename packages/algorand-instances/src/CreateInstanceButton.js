@@ -9,7 +9,7 @@ import {
   CustomInput,
 } from '@obsidians/ui-components'
 
-import keypairManager from '@obsidians/algorand-keypair'
+import keypairManager from '@obsidians/keypair'
 import Terminal from '@obsidians/terminal'
 
 import instanceChannel from './instanceChannel'

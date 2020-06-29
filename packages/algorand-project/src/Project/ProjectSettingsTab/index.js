@@ -82,6 +82,7 @@ export default class ProjectSettingsTab extends PureComponent {
             <FormGroup>
               <Label>Project language</Label>
               <CustomInput
+                id='settings-language'
                 type='select'
                 className='bg-black'
                 value={settings.language}
@@ -92,7 +93,6 @@ export default class ProjectSettingsTab extends PureComponent {
               </CustomInput>
             </FormGroup>
             <DebouncedFormGroup
-              code
               label='Main file'
               className='bg-black'
               value={settings.main}

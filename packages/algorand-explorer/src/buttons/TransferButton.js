@@ -10,7 +10,7 @@ import {
 } from '@obsidians/ui-components'
 
 import nodeManager from '@obsidians/algorand-node'
-import { signatureProvider } from '@obsidians/algorand-keypair'
+import { signatureProvider } from '@obsidians/algorand-sdk'
 import notification from '@obsidians/notification'
 
 export default class TransferButton extends PureComponent {

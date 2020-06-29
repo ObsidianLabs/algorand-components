@@ -1808,6 +1808,23 @@
   dependencies:
     "@obsidians/pty" "^0.9.1"
 
+"@obsidians/ipc@^0.1.2":
+  version "0.1.2"
+  resolved "http://localhost:4873/@obsidians%2fipc/-/ipc-0.1.2.tgz#e4297edf0cadb6c22e575efee3b70b4ceda36c79"
+  integrity sha512-wE5DhYXKJ451ecRB1H7cG5+wZeD+Iowlbd2pHKa7HhpN0oKyGxiJEjUKISt4DR0CGvwkmBBG0tOVvqXUSqJJoA==
+  dependencies:
+    "@obsidians/pty" "^0.9.1"
+
+"@obsidians/keypair@^0.1.0":
+  version "0.1.0"
+  resolved "http://localhost:4873/@obsidians%2fkeypair/-/keypair-0.1.0.tgz#d71353306942ea18cfebe449e3d7b81e7e561fcd"
+  integrity sha512-FzADLW4zHcpdJWX5yl+rHwbu5HHeD8qoEMH1037C1tUUWZieBMaLGsDoymq+r3Ks/3o8bMJf3QI5q5OoQ7IgbQ==
+  dependencies:
+    "@obsidians/ipc" "^0.1.2"
+    "@obsidians/pty" "^0.9.1"
+    "@obsidians/ui-components" "^0.1.0"
+    keytar "^5.6.0"
+
 "@obsidians/navbar@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@obsidians/navbar/-/navbar-0.1.0.tgz#8bdbbe3ccacb465856c39057d0603376c9fea639"

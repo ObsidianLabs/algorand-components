@@ -1,4 +1,4 @@
-import keypairManager from './keypairManager'
+import keypairManager from '@obsidians/keypair'
 
 export default function signatureProvider (addr) {
   return async ({ algoTxn, logicSig, raw = false }) => {

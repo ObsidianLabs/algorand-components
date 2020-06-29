@@ -1,7 +1,7 @@
 import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
-import { KeypairButton } from '@obsidians/algorand-keypair'
+import { KeypairButton } from '@obsidians/keypair'
 import { NodeVersionSelector } from '@obsidians/algorand-instances'
 import { PytealSelector } from '@obsidians/algorand-compiler'
 import { TerminalButton } from '@obsidians/algorand-project'
@@ -9,7 +9,7 @@ import { TerminalButton } from '@obsidians/algorand-project'
 export default function BottomBar (props) {
   return (
     <React.Fragment>
-      <KeypairButton>
+      <KeypairButton secretName='Mnemonic'>
         <div className='btn btn-primary btn-sm btn-flat'>
           <i className='fas fa-key' />
         </div>

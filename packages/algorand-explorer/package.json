@@ -17,7 +17,6 @@
     "prepare": "yarn build"
   },
   "dependencies": {
-    "@obsidians/algorand-keypair": "^0.1.0",
     "@obsidians/algorand-sdk": "^0.1.0",
     "@obsidians/ui-components": "^0.1.0"
   },

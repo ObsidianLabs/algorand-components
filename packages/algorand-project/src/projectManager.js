@@ -1,7 +1,8 @@
 import fileOps from '@obsidians/file-ops'
 import notification from '@obsidians/notification'
+import keypairManager from '@obsidians/keypair'
 import compilerManager from '@obsidians/algorand-compiler'
-import keypairManager, { signatureProvider } from '@obsidians/algorand-keypair'
+import { signatureProvider } from '@obsidians/algorand-sdk'
 import nodeManager from '@obsidians/algorand-node'
 
 class ProjectManager {
