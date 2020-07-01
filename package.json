@@ -2,6 +2,7 @@
   "name": "@obsidians/algorand-components",
   "private": true,
   "scripts": {
+    "build": "node init.js"
   },
   "dependencies": {
   },
