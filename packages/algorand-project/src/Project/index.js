@@ -11,12 +11,16 @@ import ProjectSettings from './ProjectSettings'
 import ProjectToolbar from './ProjectToolbar'
 import ProjectSettingsTab from './ProjectSettingsTab'
 
+import teal from './languages/teal'
+
 useBuiltinCustomTabs(['markdown'])
 modelSessionManager.registerCustomTab('settings', ProjectSettingsTab, 'Project Settings')
 modelSessionManager.registerModeDetector(filePath => {
   const { base } = fileOps.current.path.parse(filePath)
   if (base === 'config.json') {
     return 'settings'
+  } else if (base.endsWith('.teal')) {
+    return 'teal'
   } else {
     return defaultModeDetector(filePath)
   }
@@ -37,6 +41,7 @@ export default class Project extends PureComponent {
 
   async componentDidMount () {
     projectManager.algorandProject = this
+    teal()
     this.prepareProject(this.props.projectRoot)
   }
 
