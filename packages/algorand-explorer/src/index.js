@@ -3,10 +3,7 @@ import React, { PureComponent } from 'react'
 import {
   TabsWithNavigationBar,
   Modal,
-  LoadingScreen,
 } from '@obsidians/ui-components'
-
-import AlgoSdk from '@obsidians/algorand-sdk'
 
 import AlgorandAccountPage from './AlgorandAccountPage'
 
@@ -34,7 +31,6 @@ export default class AlgorandAccount extends PureComponent {
     }
 
     this.state = {
-      algoSdk: null,
       initialSelected,
       initialTabs,
       value: props.address,
@@ -46,21 +42,9 @@ export default class AlgorandAccount extends PureComponent {
   }
 
   componentDidMount () {
-    this.refresh(this.props.algoNode)
   }
 
   componentDidUpdate (prevProps) {
-    if (!prevProps.algoNode && this.props.algoNode) {
-      this.refresh(this.props.algoNode)
-    }
-  }
-
-  refresh = (algoNode) => {
-    let algoSdk = null
-    if (algoNode) {
-      algoSdk = new AlgoSdk(algoNode)
-    }
-    this.setState({ algoSdk })
   }
 
   get currentValue () {

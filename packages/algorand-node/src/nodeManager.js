@@ -42,7 +42,7 @@ class NodeManager {
     
     if (!result.code) {
       return {
-        nodeUrl: 'http://localhost:8080',
+        url: 'http://localhost:8080',
         token: result.logs,
       }
     }
@@ -75,6 +75,14 @@ class NodeManager {
       this._algoSdk = new AlgoSdk(params)
     } else {
       this._algoSdk = null
+    }
+  }
+
+  switchNetwork (network) {
+    if (network.url) {
+      this._sdk = new AlgoSdk(network)
+    } else {
+      this._sdk = null
     }
   }
 

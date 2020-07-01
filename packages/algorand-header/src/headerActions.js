@@ -1,5 +1,6 @@
 import notification from '@obsidians/notification'
 import redux from '@obsidians/redux'
+import nodeManager from '@obsidians/algorand-node'
 
 import { List } from 'immutable'
 
@@ -49,6 +50,7 @@ export class HeaderActions {
     if (!network) {
       return
     }
+    nodeManager.switchNetwork(network)
     redux.dispatch('SELECT_NETWORK', network.id)
     notification.success(`Network`, network.notification)
     this.history.push(`/network/${network.id}`)
