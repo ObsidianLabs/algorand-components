@@ -38,7 +38,7 @@ export default class Header extends PureComponent {
       //   }],
       // },
       {
-        route: 'explorer',
+        route: 'account',
         title: 'Account',
         icon: 'fa-file-invoice',
         selected: { id: selectedAccount, name: selectedAccount && <code>{selectedAccount}</code> },
