@@ -1,6 +1,3 @@
-const fs = require('fs')
-const { net } = require('electron')
-
 const { IpcChannel } = require('@obsidians/ipc')
 
 const semverLt = require('semver/functions/lt')
@@ -86,17 +83,7 @@ class InstanceManager extends IpcChannel {
   }
 
   async remoteVersions (size) {
-    const res = await new Promise((resolve, reject) => {
-      const request = net.request(`http://registry.hub.docker.com/v1/repositories/algorand/stable/tags`)
-      request.on('response', (response) => {
-        let body = ''
-        response.on('data', chunk => {
-          body += chunk
-        })
-        response.on('end', () => resolve(body))
-      })
-      request.end()
-    })
+    const res = await this.fetch(`http://registry.hub.docker.com/v1/repositories/algorand/stable/tags`)
     return JSON.parse(res)
       .filter(({ name }) => name.startsWith('2.'))
       .sort((x, y) => semverLt(x.name, y.name) ? 1 : -1)

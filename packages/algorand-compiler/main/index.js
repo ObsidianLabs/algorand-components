@@ -1,5 +1,3 @@
-const { net } = require('electron')
-
 const { IpcChannel } = require('@obsidians/ipc')
 
 class PytealManager extends IpcChannel {
@@ -18,17 +16,7 @@ class PytealManager extends IpcChannel {
   }
 
   async pytealVersions (size = 10) {
-    const res = await new Promise((resolve, reject) => {
-      const request = net.request(`http://registry.hub.docker.com/v1/repositories/obsidians/pyteal/tags`)
-      request.on('response', (response) => {
-        let body = ''
-        response.on('data', chunk => {
-          body += chunk
-        })
-        response.on('end', () => resolve(body))
-      })
-      request.end()
-    })
+    const res = await this.fetch(`http://registry.hub.docker.com/v1/repositories/obsidians/pyteal/tags`)
     return JSON.parse(res)
       .sort((x, y) => x.name < y.name ? 1 : -1)
       .slice(0, size)
