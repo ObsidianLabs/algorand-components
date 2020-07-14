@@ -1,6 +1,6 @@
 {
   "name": "@obsidians/algorand-components",
-  "license": "gpl-3.0",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "build": "node init.js"
