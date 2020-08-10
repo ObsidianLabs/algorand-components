@@ -28,8 +28,8 @@ export default function BottomBar (props) {
               noneName='No Algorand installed'
               modalTitle='Algorand Version Manager'
               downloadingTitle='Downloading Algorand'
-              selected={props.compilerVersion}
-              onSelected={compilerVersion => props.onSelectCompiler(compilerVersion)}
+              selected={props.nodeVersion}
+              onSelected={nodeVersion => props.onSelectNodeVersion(nodeVersion)}
             />
           )
         }}
