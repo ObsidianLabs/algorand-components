@@ -1,42 +1,16 @@
-const { net } = require('electron')
+const semverLt = require('semver/functions/lt')
+const semverValid = require('semver/functions/valid')
 
 const { IpcChannel } = require('@obsidians/ipc')
+const { DockerImageChannel } = require('@obsidians/docker')
 
 class PytealManager extends IpcChannel {
   constructor () {
     super('pyteal')
-  }
-
-  async versions () {
-    const { logs: images } = await this.pty.exec(`docker images obsidians/pyteal --format "{{json . }}"`)
-    const versions = images.split('\n').filter(Boolean).map(JSON.parse)
-    return versions
-  }
-
-  async deleteVersion (version) {
-    await this.pty.exec(`docker rmi obsidians/pyteal:${version}`)
-  }
-
-  async pytealVersions (size = 10) {
-    const res = await new Promise((resolve, reject) => {
-      const request = net.request(`http://registry.hub.docker.com/v1/repositories/obsidians/pyteal/tags`)
-      request.on('response', (response) => {
-        let body = ''
-        response.on('data', chunk => {
-          body += chunk
-        })
-        response.on('end', () => resolve(body))
-      })
-      request.end()
+    this.channel = new DockerImageChannel('obsidians/pyteal', {
+      filter: tag => semverValid(tag),
+      sort: (x, y) => semverLt(x, y) ? 1 : -1
     })
-    return JSON.parse(res)
-      .sort((x, y) => x.name < y.name ? 1 : -1)
-      .slice(0, size)
-  }
-
-  async any () {
-    const { versions = [] } = await this.versions()
-    return !!versions.length
   }
 
   resize ({ cols, rows }) {

@@ -1,18 +1,14 @@
-import { IpcChannel } from '@obsidians/ipc'
+import { DockerImageChannel } from '@obsidians/docker'
 import notification from '@obsidians/notification'
 import fileOps from '@obsidians/file-ops'
 import algosdk from 'algosdk'
 
 class CompilerManager {
   constructor () {
-    this.channel = new IpcChannel('pyteal')
+    this.channel = new DockerImageChannel('obsidians/pyteal')
     this._terminal = null
     this._button = null
     this.notification = null
-  }
-
-  async invoke (method, ...args) {
-    return await this.channel.invoke(method, ...args)
   }
 
   set terminal (v) {

@@ -1,9 +1,8 @@
 import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
+import { DockerImageSelector } from '@obsidians/docker'
 import { KeypairButton } from '@obsidians/keypair'
-import { NodeVersionSelector } from '@obsidians/algorand-instances'
-import { PytealSelector } from '@obsidians/algorand-compiler'
 import { TerminalButton } from '@obsidians/algorand-project'
 
 export default function BottomBar (props) {
@@ -22,9 +21,15 @@ export default function BottomBar (props) {
             return null
           }
           return (
-            <NodeVersionSelector
-              selected={props.nodeVersion}
-              onSelected={nodeVersion => props.onSelectNodeVersion(nodeVersion)}
+            <DockerImageSelector
+              imageName='algorand/stable'
+              icon='fas fa-hammer'
+              title='Algorand'
+              noneName='No Algorand installed'
+              modalTitle='Algorand Version Manager'
+              downloadingTitle='Downloading Algorand'
+              selected={props.compilerVersion}
+              onSelected={compilerVersion => props.onSelectCompiler(compilerVersion)}
             />
           )
         }}
@@ -36,7 +41,13 @@ export default function BottomBar (props) {
             return null
           }
           return (
-            <PytealSelector
+            <DockerImageSelector
+              imageName='obsidians/pyteal'
+              icon='fas fa-hammer'
+              title='PyTeal'
+              noneName='No PyTeal installed'
+              modalTitle='PyTeal Version Manager'
+              downloadingTitle='Downloading PyTeal'
               selected={props.compilerVersion}
               onSelected={compilerVersion => props.onSelectCompiler(compilerVersion)}
             />

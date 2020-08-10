@@ -1,3 +1,8 @@
 import { IpcChannel } from '@obsidians/ipc'
+import { DockerImageChannel } from '@obsidians/docker'
 
-export default new IpcChannel('algorand-node')
+const channel = new IpcChannel('algorand-node')
+
+channel.node = new DockerImageChannel('algorand/stable')
+
+export default channel
