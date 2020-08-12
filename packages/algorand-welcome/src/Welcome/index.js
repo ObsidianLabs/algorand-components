@@ -6,8 +6,8 @@ import {
 
 import fileOps from '@obsidians/file-ops'
 
-import instanceManager, { NodeVersionInstaller } from '@obsidians/algorand-instances'
-import compilerManager, { PytealInstaller } from '@obsidians/algorand-compiler'
+import instance from '@obsidians/algorand-instances'
+import compiler from '@obsidians/algorand-compiler'
 
 import ListItemDocker from './ListItemDocker'
 import DockerImageItem from './DockerImageItem'
@@ -64,21 +64,21 @@ export default class Welcome extends PureComponent {
               />
               <DockerImageItem
                 ref={this.listItemNode}
+                channel={instance.node}
                 title='Algorand Node'
                 subtitle='The main software that runs Algorand node and compiles Teal scripts.'
                 link='https://hub.docker.com/r/algorand/stable'
-                getVersions={() => instanceManager.invoke('versions')}
-                Installer={NodeVersionInstaller}
                 onInstalled={this.refresh}
+                downloadingTitle='Downloading Algorand'
               />
               <DockerImageItem
                 ref={this.listItemCompiler}
+                channel={compiler.channel}
                 title='PyTeal Compiler'
                 subtitle='PyTeal compiler is required to compile PyTeal to Teal.'
                 link='https://hub.docker.com/r/obsidians/pyteal'
-                getVersions={() => compilerManager.invoke('versions')}
-                Installer={PytealInstaller}
                 onInstalled={this.refresh}
+                downloadingTitle='Downloading PyTeal'
               />
             </ListGroup>
             <Button
