@@ -1,6 +1,5 @@
-import { IpcChannel } from '@obsidians/ipc'
 import instance from '@obsidians/algorand-instances'
-import compiler from '@obsidians/algorand-compiler'
+import compilerManager from '@obsidians/algorand-compiler'
 import { dockerChannel } from '@obsidians/docker'
 
 export default async function checkDependencies () {
@@ -8,7 +7,7 @@ export default async function checkDependencies () {
     const results = await Promise.all([
       dockerChannel.check(),
       instance.node.installed(),
-      compiler.channel.installed(),
+      compilerManager.channel.installed(),
     ])
     return results.every(x => !!x)
   } catch (e) {

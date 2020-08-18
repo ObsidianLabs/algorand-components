@@ -7,7 +7,7 @@ import {
 import fileOps from '@obsidians/file-ops'
 
 import instance from '@obsidians/algorand-instances'
-import compiler from '@obsidians/algorand-compiler'
+import compilerManager from '@obsidians/algorand-compiler'
 
 import ListItemDocker from './ListItemDocker'
 import DockerImageItem from './DockerImageItem'
@@ -73,7 +73,7 @@ export default class Welcome extends PureComponent {
               />
               <DockerImageItem
                 ref={this.listItemCompiler}
-                channel={compiler.channel}
+                channel={compilerManager.channel}
                 title='PyTeal Compiler'
                 subtitle='PyTeal compiler is required to compile PyTeal to Teal.'
                 link='https://hub.docker.com/r/obsidians/pyteal'
