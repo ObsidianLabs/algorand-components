@@ -5,7 +5,7 @@ import encoding from 'algosdk/src/encoding/encoding'
 import address from 'algosdk/src/encoding/address'
 
 export const regularSigner = sp => async (txn, gid) => {
-  let algoTxn = new txnBuilder.Transaction(txn)
+  const algoTxn = new txnBuilder.Transaction(txn)
   if (gid) {
     algoTxn.group = gid
   }
@@ -16,7 +16,7 @@ export const regularSigner = sp => async (txn, gid) => {
 }
 
 export const msigSigner = (getSigs, msig) => async (txn, gid) => {
-  let algoTxn = new multisig.MultisigTransaction(txn)
+  const algoTxn = new multisig.MultisigTransaction(txn)
   if (gid) {
     algoTxn.group = gid
   }
@@ -60,5 +60,10 @@ export const lsigSigner = (sp, lsig) => async (txn, gid) => {
   if (sp) {
     await sp({ logicSig })
   }
-  return algosdk.signLogicSigTransaction(txn, logicSig)
+
+  const algoTxn = new txnBuilder.Transaction(txn)
+  if (gid) {
+    algoTxn.group = gid
+  }
+  return algosdk.signLogicSigTransactionObject(algoTxn, logicSig)
 }

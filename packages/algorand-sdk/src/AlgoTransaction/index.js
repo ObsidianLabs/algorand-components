@@ -58,8 +58,15 @@ export default class AlgoTransaction {
     return this.accounts[n] ? this.accounts[n].addr : n
   }
 
+  getLease(lease) {
+    if (lease) {
+      return Uint8Array.from(window.atob(lease), c => c.charCodeAt(0))
+    }
+    return undefined
+  }
+
   parseSingleTxn (txn) {
-    const { type, params } = txn
+    const { type, params, ...rest } = txn
     let algoTxn
     switch (type) {
       case 'pay':
@@ -77,6 +84,8 @@ export default class AlgoTransaction {
           amount,
           closeRemainderTo: this.getAddress(params.closeRemainderTo),
           note: params.note || undefined,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break;
       case 'asset-create':
@@ -95,6 +104,8 @@ export default class AlgoTransaction {
           assetFreeze: this.getAddress(params.freeze || params.manager),
           assetClawback: this.getAddress(params.clawback || params.manager),
           assetDefaultFrozen: params.defaultFrozen,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break;
       case 'asset-modify':
@@ -107,6 +118,8 @@ export default class AlgoTransaction {
           assetReserve: this.getAddress(params.reserve),
           assetFreeze: this.getAddress(params.freeze),
           assetClawback: this.getAddress(params.clawback),
+          lease: this.getLease(params.lease),
+          flatFee: true,
         }
         break
       case 'asset-freeze':
@@ -117,6 +130,8 @@ export default class AlgoTransaction {
           note: params.note || undefined,
           freezeAccount: this.getAddress(params.target),
           freezeState: params.state,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break
       case 'asset-destroy':
@@ -125,6 +140,8 @@ export default class AlgoTransaction {
           assetIndex: params.assetId,
           from: this.getAddress(params.from),
           note: params.note || undefined,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break
       case 'asset-opt-in':
@@ -134,6 +151,8 @@ export default class AlgoTransaction {
           to: this.getAddress(params.to),
           assetIndex: params.assetId,
           note: params.note || undefined,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break
       case 'asset-transfer':
@@ -146,6 +165,8 @@ export default class AlgoTransaction {
           closeRemainderTo: this.getAddress(params.closeRemainderTo),
           assetRevocationTarget: this.getAddress(params.assetRevocationTarget),
           note: params.note || undefined,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break
       case 'keyreg':
@@ -158,6 +179,8 @@ export default class AlgoTransaction {
           voteFirst: params.first,
           voteLast: params.last,
           voteKeyDilution: params.dilution,
+          lease: this.getLease(params.lease),
+          ...rest,
         }
         break
       default:
