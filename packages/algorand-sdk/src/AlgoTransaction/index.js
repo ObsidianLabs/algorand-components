@@ -71,7 +71,7 @@ export default class AlgoTransaction {
     switch (type) {
       case 'pay':
         const amount = Number(params.amount) * 1000000
-        if (!amount) {
+        if (params.to && !amount) {
           throw new Error(`Invalid amount value: ${params.amount}`)
         }
         if (amount !== Math.floor(amount)) {
