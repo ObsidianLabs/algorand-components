@@ -18,8 +18,6 @@ export default {
     }
   ],
   external: [
-    'monaco-editor',
-    'monaco-ace-tokenizer',
     ...Object.keys(pkg.dependencies),
     ...Object.keys(pkg.peerDependencies),
   ],
