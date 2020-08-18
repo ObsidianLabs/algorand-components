@@ -111,15 +111,15 @@ class ProjectManager {
     }
 
     for (const filePath in files) {
-      const content = await fileOps.current.readFile(filePath, 'utf8')
       let base64 = ''
 
       files[filePath].forEach(([type, replacing]) => {
         if (type === 'file') {
+          const content = fileOps.current.fs.readFileSync(filePath, 'utf8')
           testJson = testJson.replace(replacing, `"${content}"`)
         } else if (type === 'base64') {
           if (!base64) {
-            base64 = Buffer.from(content, 'utf8').toString('base64')
+            base64 = fileOps.current.fs.readFileSync(filePath, 'base64')
           }
           testJson = testJson.replace(replacing, `"${base64}"`)
         }
@@ -134,9 +134,7 @@ class ProjectManager {
       return
     }
 
-    console.log(txn)
-
-    const keypairs = await keypairManager.loadAllKeypairs()
+    const keypairs = (await keypairManager.loadAllKeypairs()).map(k => ({ name: k.name, addr: k.address }))
     txn.accounts = keypairs.concat(txn.accounts)
 
     const algoTxn = nodeManager.algoSdk.newTransaction(txn, signatureProvider)

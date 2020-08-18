@@ -1,14 +1,17 @@
+import algosdk from 'algosdk'
 import keypairManager from '@obsidians/keypair'
 
 export default function signatureProvider (addr) {
   return async ({ algoTxn, logicSig, raw = false }) => {
-    const sk = await keypairManager.getSigner(addr)
+    const mnemonic = await keypairManager.getSigner(addr)
+    const key = algosdk.mnemonicToSecretKey(mnemonic)
+
     if (logicSig) {
-      return logicSig.sign(sk)
+      return logicSig.sign(key.sk)
     } else if (raw) {
-      return algoTxn.rawSignTxn(sk)
+      return algoTxn.rawSignTxn(key.sk)
     } else {
-      return algoTxn.signTxn(sk)
+      return algoTxn.signTxn(key.sk)
     }
   }
 }

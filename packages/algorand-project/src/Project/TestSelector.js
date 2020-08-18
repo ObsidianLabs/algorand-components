@@ -46,6 +46,7 @@ export default class TestSelector extends PureComponent {
       const result = await projectManager.testTransaction(this.state.selected)
       notification.success('Test Transaction Pushed', `Transaction ID: <code>${result.txId}</code>`)
     } catch (e) {
+      console.error(e)
       notification.error('Test Failed', e.message)
     }
     this.setState({ running: false })
