@@ -1,0 +1,14 @@
+{
+  "name": "opt in",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "asset-opt-in",
+      "params": {
+        "assetId": 12006640,
+        "to": "Alice"
+      },
+      "signers": ["Alice"]
+    }
+  ]
+}

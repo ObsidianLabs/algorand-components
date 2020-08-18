@@ -1,0 +1,29 @@
+{
+  "name": "exchange",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "file:../contract.addr",
+        "to": "Bob",
+        "amount": 1
+      },
+      "fee": 1000,
+      "flatFee": true,
+      "lsig": {
+        "program": "base64:../contract.teal.tok"
+      }
+    },
+    {
+      "type": "asset-transfer",
+      "params": {
+        "assetId": 12006640,
+        "from": "Bob",
+        "to": "Alice",
+        "amount": 10
+      },
+      "signers": ["Bob"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "deposit",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "Alice",
+        "to": "file:../contract.addr",
+        "amount": 10
+      },
+      "signers": ["Alice"]
+    }
+  ]
+}

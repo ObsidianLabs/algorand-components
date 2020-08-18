@@ -136,6 +136,7 @@ export default class NewProjectModal extends Component {
             onChange={event => this.setState({ template: event.target.value })}
           >
             <option value='dynamic_fee'>Dynamic Fee</option>
+            <option value='limit_order'>Limit Order</option>
             <option value='periodic_pay'>Periodic Payment</option>
             <option value='htlc'>Hash Time Lock Contract</option>
             <option value='empty'>Empty TEAL Contract</option>

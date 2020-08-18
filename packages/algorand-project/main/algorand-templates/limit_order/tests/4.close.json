@@ -1,0 +1,19 @@
+{
+  "name": "close",
+  "accounts": [],
+  "txns": [
+    {
+      "type": "pay",
+      "params": {
+        "from": "file:../contract.addr",
+        "closeRemainderTo": "Alice",
+        "amount": 0
+      },
+      "fee": 1000,
+      "flatFee": true,
+      "lsig": {
+        "program": "base64:../contract.teal.tok"
+      }
+    }
+  ]
+}
