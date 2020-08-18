@@ -1,8 +1,10 @@
 import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
-import { DockerImageSelector } from '@obsidians/docker'
 import { KeypairButton } from '@obsidians/keypair'
+import { DockerImageSelector } from '@obsidians/docker'
+import instance from '@obsidians/algorand-instances'
+import compilerManager from '@obsidians/algorand-compiler'
 import { TerminalButton } from '@obsidians/algorand-project'
 
 export default function BottomBar (props) {
@@ -22,7 +24,7 @@ export default function BottomBar (props) {
           }
           return (
             <DockerImageSelector
-              imageName='algorand/stable'
+              channel={instance.node}
               icon='fas fa-hammer'
               title='Algorand'
               noneName='No Algorand installed'
@@ -42,7 +44,7 @@ export default function BottomBar (props) {
           }
           return (
             <DockerImageSelector
-              imageName='obsidians/pyteal'
+              channel={compilerManager.channel}
               icon='fas fa-hammer'
               title='PyTeal'
               noneName='No PyTeal installed'
