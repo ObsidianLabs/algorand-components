@@ -27,7 +27,7 @@ export default function BottomBar (props) {
               channel={instance.node}
               icon='fas fa-hammer'
               title='Algorand'
-              noneName='No Algorand installed'
+              noneName='Algorand node'
               modalTitle='Algorand Version Manager'
               downloadingTitle='Downloading Algorand'
               selected={props.nodeVersion}
@@ -47,7 +47,7 @@ export default function BottomBar (props) {
               channel={compilerManager.channel}
               icon='fas fa-hammer'
               title='PyTeal'
-              noneName='No PyTeal installed'
+              noneName='PyTeal'
               modalTitle='PyTeal Version Manager'
               downloadingTitle='Downloading PyTeal'
               selected={props.compilerVersion}

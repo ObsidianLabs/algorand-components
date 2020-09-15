@@ -95,7 +95,7 @@ export default class InstanceList extends PureComponent {
               channel={instanceChannel.node}
               icon='fas fa-server'
               title='Algorand Versions'
-              noneName='No Algorand node installed'
+              noneName='Algorand node'
               modalTitle='Algorand Version Manager'
               downloadingTitle='Downloading Algorand'
             />
