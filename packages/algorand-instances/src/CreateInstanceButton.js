@@ -3,13 +3,10 @@ import React, { PureComponent } from 'react'
 import {
   Button,
   Modal,
-  FormGroup,
-  Label,
   DebouncedFormGroup,
-  CustomInput,
 } from '@obsidians/ui-components'
 
-import keypairManager from '@obsidians/keypair'
+import { DockerImageInputSelector } from '@obsidians/docker'
 import Terminal from '@obsidians/terminal'
 
 import instanceChannel from './instanceChannel'
@@ -19,43 +16,21 @@ export default class CreateInstanceButton extends PureComponent {
     super(props)
 
     this.state = {
-      loading: false,
-      versions: [],
-      keypairs: [],
       name: '',
-      selected: '',
-      addr: '',
-      creating: false,
+      version: '',
+      pending: false,
     }
 
     this.modal = React.createRef()
     this.terminal = React.createRef()
   }
 
-  componentDidMount () {
-    this.refresh()
-  }
-
-  refresh = async () => {
-    this.setState({ loading: true })
-    const versions = await instanceChannel.node.versions()
-    const keypairs = await keypairManager.loadAllKeypairs()
-    this.setState({
-      versions,
-      loading: false,
-      keypairs,
-      selected: versions[0] ? versions[0].Tag : '',
-      addr: keypairs[0] ? keypairs[0].addr : '',
-    })
-  }
-
   onClickButton = () => {
-    this.refresh()
     this.modal.current.openModal()
   }
 
   onCreateInstance = async () => {
-    this.setState({ creating: 'Creating...' })
+    this.setState({ pending: 'Creating...' })
 
     if (this.props.chain !== 'devnet') {
       const subFolder = `${this.props.chain}-v1.0`
@@ -68,56 +43,12 @@ export default class CreateInstanceButton extends PureComponent {
 
     await instanceChannel.invoke('create', {
       name: this.state.name,
-      version: this.state.selected,
-      address: this.state.addr,
+      version: this.state.version,
       chain: this.props.chain,
     })
     this.modal.current.closeModal()
-    this.setState({ creating: false })
+    this.setState({ pending: false })
     this.props.onRefresh()
-  }
-
-  renderAlgorandVersionOptions = () => {
-    if (this.state.loading) {
-      return 'Loading'
-    }
-
-    if (!this.state.versions.length) {
-      return <option disabled key='' value=''>(No Algorand installed)</option>
-    }
-
-    return this.state.versions.map(v => <option key={v.Tag} value={v.Tag}>{v.Tag}</option>)
-  }
-
-  renderAddrInput = () => {
-    if (this.props.chain !== 'devnet') {
-      return null
-    }
-    return (
-      <FormGroup>
-        <Label>Address</Label>
-        <CustomInput
-          type='select'
-          className='form-control'
-          value={this.state.addr}
-          onChange={event => this.setState({ addr: event.target.value })}
-        >
-          {this.renderAddrOptions()}
-        </CustomInput>
-      </FormGroup>
-    )
-  }
-
-  renderAddrOptions = () => {
-    if (this.state.loading) {
-      return 'Loading'
-    }
-
-    if (!this.state.keypairs.length) {
-      return <option disabled key='' value=''>(No CKB keypairs)</option>
-    }
-
-    return this.state.keypairs.map(k => <option key={k.addr} value={k.addr}>{k.addr}</option>)
   }
 
   render () {
@@ -134,10 +65,11 @@ export default class CreateInstanceButton extends PureComponent {
         </Button>
         <Modal
           ref={this.modal}
+          overflow
           title={`New Instance (${this.props.chain})`}
           textConfirm='Create'
           onConfirm={this.onCreateInstance}
-          pending={this.state.creating}
+          pending={this.state.pending}
           confirmDisabled={!this.state.name || !this.state.selected}
         >
           <DebouncedFormGroup
@@ -147,21 +79,19 @@ export default class CreateInstanceButton extends PureComponent {
             value={this.state.name}
             onChange={name => this.setState({ name })}
           />
-          <FormGroup>
-            <Label>Algorand version</Label>
-            <CustomInput
-              type='select'
-              className='form-control'
-              value={this.state.selected}
-              onChange={event => this.setState({ selected: event.target.value })}
-            >
-              {this.renderAlgorandVersionOptions()}
-            </CustomInput>
-          </FormGroup>
-          <div style={{ display: this.state.creating ? 'block' : 'none'}}>
+          <DockerImageInputSelector
+            channel={instanceChannel.node}
+            label='Algorand version'
+            noneName='Algorand node'
+            modalTitle='Algorand Version Manager'
+            downloadingTitle='Downloading Algorand'
+            selected={this.state.version}
+            onSelected={version => this.setState({ version })}
+          />
+          <div style={{ display: this.state.pending ? 'block' : 'none'}}>
             <Terminal
               ref={this.terminal}
-              active={!!this.state.creating}
+              active={!!this.state.pending}
               height='200px'
               logId='algorand-new-instance'
               className='rounded overflow-hidden'
