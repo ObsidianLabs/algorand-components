@@ -119,7 +119,7 @@ export default class AlgoTransaction {
           assetFreeze: this.getAddress(params.freeze),
           assetClawback: this.getAddress(params.clawback),
           lease: this.getLease(params.lease),
-          flatFee: true,
+          ...rest,
         }
         break
       case 'asset-freeze':
