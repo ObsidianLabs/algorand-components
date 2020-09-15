@@ -8,7 +8,7 @@ const { DockerImageChannel } = require('@obsidians/docker')
 class InstanceManager extends IpcChannel {
   constructor () {
     super('algorand-node')
-    this.channel = new DockerImageChannel('algorand/stable', {
+    this.dockerChannel = new DockerImageChannel('algorand/stable', {
       filter: tag => semverValid(tag),
       sort: (x, y) => semverLt(x, y) ? 1 : -1
     })

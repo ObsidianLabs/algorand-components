@@ -7,7 +7,7 @@ const { DockerImageChannel } = require('@obsidians/docker')
 class PytealManager extends TerminalChannel {
   constructor () {
     super('pyteal')
-    this.channel = new DockerImageChannel('obsidians/pyteal', {
+    this.dockerChannel = new DockerImageChannel('obsidians/pyteal', {
       filter: tag => semverValid(tag),
       sort: (x, y) => semverLt(x, y) ? 1 : -1
     })
