@@ -1,6 +1,4 @@
 const fs = require('fs')
-const semverLt = require('semver/functions/lt')
-const semverValid = require('semver/functions/valid')
 
 const { IpcChannel } = require('@obsidians/ipc')
 const { DockerImageChannel } = require('@obsidians/docker')
@@ -8,10 +6,7 @@ const { DockerImageChannel } = require('@obsidians/docker')
 class InstanceManager extends IpcChannel {
   constructor () {
     super('algorand-node')
-    this.dockerChannel = new DockerImageChannel('algorand/stable', {
-      filter: tag => semverValid(tag),
-      sort: (x, y) => semverLt(x, y) ? 1 : -1
-    })
+    this.dockerChannel = new DockerImageChannel('algorand/stable')
   }
 
   async create ({ name, version, address, chain = 'devnet' }) {
