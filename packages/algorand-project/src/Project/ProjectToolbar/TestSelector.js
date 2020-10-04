@@ -11,7 +11,7 @@ import {
 import fileOps from '@obsidians/file-ops'
 import notification from '@obsidians/notification'
 
-import projectManager from '../projectManager'
+import projectManager from '../../projectManager'
 
 export default class TestSelector extends PureComponent {
   constructor (props) {
@@ -44,7 +44,9 @@ export default class TestSelector extends PureComponent {
     this.setState({ running: true })
     try {
       const result = await projectManager.testTransaction(this.state.selected)
-      notification.success('Test Transaction Pushed', `Transaction ID: <code>${result.txId}</code>`)
+      if (result) {
+        notification.success('Test Transaction Pushed', `Transaction ID: <code>${result.txId}</code>`)
+      }
     } catch (e) {
       console.error(e)
       notification.error('Test Failed', e.message)

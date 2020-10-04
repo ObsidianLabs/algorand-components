@@ -1,58 +1,27 @@
 import fileOps from '@obsidians/file-ops'
 import notification from '@obsidians/notification'
 import keypairManager from '@obsidians/keypair'
+
+import { ProjectManager } from '@obsidians/workspace'
+
 import compilerManager from '@obsidians/algorand-compiler'
 import { signatureProvider } from '@obsidians/algorand-sdk'
 import nodeManager from '@obsidians/algorand-node'
 
-class ProjectManager {
+import AlgorandProjectSettings from './AlgorandProjectSettings'
+
+class AlgorandProjectManager extends ProjectManager {
   constructor () {
-    this.project = null
-    this.modal = null
-    this.button = null
-  }
-  
-  set algorandProject (project) {
-    this.project = project
-  }
-  get algorandProject () {
-    return this.project
+    super()
+    this.ProjectSettings = AlgorandProjectSettings
   }
 
-  set terminalButton (button) {
-    this.button = button
-  }
-
-  get projectRoot () {
-    return this.project.props.projectRoot
+  get settingsFilePath () {
+    return this.pathForProjectFile('config.json')
   }
 
   get compilerVersion () {
     return this.project.props.compilerVersion
-  }
-
-  openProjectSettings () {
-    if (this.project) {
-      this.project.openProjectSettings()
-    }
-  }
-
-  async checkSettings () {
-    if (!this.project) {
-      return
-    }
-
-    // notification.info('Not in Code Editor', 'Please switch to code editor and build.')
-    // return
-
-    const projectRoot = this.projectRoot
-    if (!projectRoot) {
-      notification.error('No Project', 'Please open a project first.')
-      return
-    }
-
-    const settings = await this.project.projectSettings.readSettings()
-    return settings
   }
 
   async compile () {
@@ -142,15 +111,6 @@ class ProjectManager {
     await algoTxn.sign()
     return await algoTxn.push()
   }
-
-  toggleTerminal (terminal) {
-    if (this.button) {
-      this.button.setState({ terminal })
-    }
-    if (this.project) {
-      this.project.toggleTerminal(terminal)
-    }
-  }
 }
 
-export default new ProjectManager()
+export default new AlgorandProjectManager()

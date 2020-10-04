@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import ProjectPath from './ProjectPath'
+import { ProjectPath } from '@obsidians/workspace'
 
 export default class ProjectList extends PureComponent {
   renderProjectRow = (project, index) => {
@@ -12,7 +12,7 @@ export default class ProjectList extends PureComponent {
         <td className='flex-column'>
           <div>
             <div className='mb-1 flex-row-center'>
-              <Link href={url} className='text-white'>
+              <Link to={url} className='text-white'>
                 <h5 className='mb-0'>{name}</h5>
               </Link>
             </div>

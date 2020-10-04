@@ -2,10 +2,7 @@ import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
 import { KeypairButton } from '@obsidians/keypair'
-import { DockerImageSelector } from '@obsidians/docker'
-import instance from '@obsidians/algorand-instances'
-import compilerManager from '@obsidians/algorand-compiler'
-import { TerminalButton } from '@obsidians/algorand-project'
+import { TerminalButton, AlgorandSelector, PyTealSelector } from '@obsidians/algorand-project'
 
 export default function BottomBar (props) {
   return (
@@ -22,38 +19,10 @@ export default function BottomBar (props) {
           if (!props.projectValid) {
             return null
           }
-          return (
-            <DockerImageSelector
-              channel={instance.node}
-              icon='fas fa-hammer'
-              title='Algorand'
-              noneName='Algorand node'
-              modalTitle='Algorand Version Manager'
-              downloadingTitle='Downloading Algorand'
-              selected={props.nodeVersion}
-              onSelected={nodeVersion => props.onSelectNodeVersion(nodeVersion)}
-            />
-          )
-        }}
-      />
-      <CacheRoute
-        path={`/guest/:project`}
-        render={() => {
-          if (!props.projectValid) {
-            return null
-          }
-          return (
-            <DockerImageSelector
-              channel={compilerManager.channel}
-              icon='fas fa-hammer'
-              title='PyTeal'
-              noneName='PyTeal'
-              modalTitle='PyTeal Version Manager'
-              downloadingTitle='Downloading PyTeal'
-              selected={props.compilerVersion}
-              onSelected={compilerVersion => props.onSelectCompiler(compilerVersion)}
-            />
-          )
+          return <>
+            <AlgorandSelector />
+            <PyTealSelector />
+          </>
         }}
       />
       <CacheRoute

@@ -1,4 +1,8 @@
 {
   "language": "pyteal",
-  "main": "main.py"
+  "main": "main.py",
+  "compilers": {
+    "algorand": "2.1.6",
+    "pyteal": "0.5.4"
+  }
 }

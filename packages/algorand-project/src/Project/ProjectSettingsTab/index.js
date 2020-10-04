@@ -1,7 +1,4 @@
-import React, { PureComponent } from 'react'
-
-import fileOps from '@obsidians/file-ops'
-import { modelSessionManager } from '@obsidians/code-editor'
+import React from 'react'
 
 import {
   FormGroup,
@@ -10,66 +7,31 @@ import {
   DebouncedFormGroup,
 } from '@obsidians/ui-components'
 
-import ProjectPath from '../../components/ProjectPath'
+import {
+  WorkspaceContext,
+  AbstractProjectSettingsTab,
+  ProjectPath,
+} from '@obsidians/workspace'
 
-import set from 'lodash/set'
+import { DockerImageInputSelector } from '@obsidians/docker'
+import instance from '@obsidians/algorand-instances'
+import compilerManager from '@obsidians/algorand-compiler'
 
-export default class ProjectSettingsTab extends PureComponent {
-  constructor (props) {
-    super(props)
+import projectManager from '../../projectManager'
 
-    this.onChangeHandlers = {}
-    this.state = {
-      invalid: false,
-      settings: {}
-    }
-  }
+export default class ProjectSettingsTab extends AbstractProjectSettingsTab {
+  static contextType = WorkspaceContext
 
   componentDidMount () {
-    this.refreshSettings(this.props.modelSession.value)
+    projectManager.channel.on('settings', this.debouncedUpdate)
   }
-
-  refreshSettings = settingsJson => {
-    let rawSettings
-    try {
-      rawSettings = JSON.parse(settingsJson || '{}')
-    } catch (e) {
-      this.setState({ invalid: true })
-      return
-    }
-
-    const settings = this.trimSettings(rawSettings)
-    this.setState({ settings })
-  }
-
-  trimSettings = (rawSettings = {}) => {
-    return {
-      language: rawSettings.language || 'teal',
-      main: rawSettings.main || '',
-    }
-  }
-
-  onChange = key => {
-    if (!this.onChangeHandlers[key]) {
-      this.onChangeHandlers[key] = async value => {
-        const settings = this.state.settings
-        set(settings, key, value)
-        this.forceUpdate()
-        await this.updateProjectSettings(settings)
-      }
-    }
-    return this.onChangeHandlers[key]
-  }
-
-  async updateProjectSettings(rawSettings) {
-    const settings = this.trimSettings(rawSettings)
-    const settingsJson = JSON.stringify(settings, null, 2)
-    await fileOps.current.writeFile(this.props.modelSession.filePath, settingsJson)
+  
+  componentWillUnmount () {
+    projectManager.channel.off('settings', this.debouncedUpdate)
   }
 
   render () {
-    const projectRoot = modelSessionManager._codeEditor.projectRoot
-    const settings = this.trimSettings(this.state.settings)
+    const { projectRoot, projectSettings } = this.context
 
     return (
       <div className='custom-tab bg2'>
@@ -85,7 +47,7 @@ export default class ProjectSettingsTab extends PureComponent {
                 id='settings-language'
                 type='select'
                 className='bg-black'
-                value={settings.language}
+                value={projectSettings?.get('language')}
                 onChange={event => this.onChange('language')(event.target.value)}
               >
                 <option value='teal'>TEAL</option>
@@ -93,12 +55,40 @@ export default class ProjectSettingsTab extends PureComponent {
               </CustomInput>
             </FormGroup>
             <DebouncedFormGroup
+              code
               label='Main file'
               className='bg-black'
-              value={settings.main}
+              value={projectSettings?.get('main')}
               onChange={this.onChange('main')}
-              placeholder={`Required`}
+              placeholder='Required'
             />
+
+            <h4 className='mt-4'>Compiler</h4>
+            <DockerImageInputSelector
+              channel={instance.node}
+              disableAutoSelection
+              bg='bg-black'
+              label='TEAL compiler (integrated in Algorand node)'
+              noneName='Algorand node'
+              modalTitle='Algorand Version Manager'
+              downloadingTitle='Downloading Algorand'
+              selected={projectSettings?.get('compilers.algorand')}
+              onSelected={v => this.onChange('compilers.algorand')(v)}
+            />
+            {
+              projectSettings?.get('language') === 'pyteal' &&
+              <DockerImageInputSelector
+                channel={compilerManager.pyteal}
+                disableAutoSelection
+                bg='bg-black'
+                label='PyTeal version'
+                noneName='PyTeal'
+                modalTitle='PyTeal Version Manager'
+                downloadingTitle='Downloading PyTeal'
+                selected={projectSettings?.get('compilers.pyteal')}
+                onSelected={v => this.onChange('compilers.pyteal')(v)}
+              />
+            }
           </div>
         </div>
       </div>

@@ -7,9 +7,10 @@ import {
   InputGroup,
   InputGroupAddon,
   Input,
-  CustomInput,
   Button,
   DebouncedFormGroup,
+  DropdownInput,
+  Badge,
 } from '@obsidians/ui-components'
 
 import fileOps from '@obsidians/file-ops'
@@ -102,6 +103,7 @@ export default class NewProjectModal extends Component {
     return (
       <Modal
         ref={this.modal}
+        overflow
         title='Create a New Project'
         textConfirm='Create Project'
         onConfirm={this.onCreateProject}
@@ -127,21 +129,30 @@ export default class NewProjectModal extends Component {
           label='Project name'
           onChange={name => this.setState({ name })}
         />
-        <FormGroup>
-          <Label>Template</Label>
-          <CustomInput
-            type='select'
-            id='project-template'
-            value={this.state.template}
-            onChange={event => this.setState({ template: event.target.value })}
-          >
-            <option value='dynamic_fee'>Dynamic Fee</option>
-            <option value='limit_order'>Limit Order</option>
-            <option value='periodic_pay'>Periodic Payment</option>
-            <option value='htlc'>Hash Time Lock Contract</option>
-            <option value='empty'>Empty TEAL Contract</option>
-          </CustomInput>
-        </FormGroup>
+        <DropdownInput
+          label='Template'
+          options={[
+            {
+              group: 'TEAL',
+              badge: 'TEAL',
+              children: [
+                { id: 'empty', display: 'Empty TEAL Contract' },
+                { id: 'htlc', display: 'Hash Time Lock Contract' },
+              ],
+            },
+            {
+              group: 'PyTeal',
+              badge: 'PyTeal',
+              children: [
+                { id: 'dynamic_fee', display: 'Dynamic Fee' },
+                { id: 'periodic_pay', display: 'Periodic Payment' },
+                { id: 'limit_order', display: 'Limit Order' },
+              ],
+            },
+          ]}
+          value={this.state.template}
+          onChange={template => this.setState({ template })}
+        />
       </Modal>
     )
   }

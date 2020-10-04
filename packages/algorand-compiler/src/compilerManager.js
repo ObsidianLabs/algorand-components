@@ -5,7 +5,7 @@ import algosdk from 'algosdk'
 
 class CompilerManager {
   constructor () {
-    this.channel = new DockerImageChannel('obsidians/pyteal')
+    this.pyteal = new DockerImageChannel('obsidians/pyteal')
     this._terminal = null
     this._button = null
     this.notification = null
@@ -26,20 +26,6 @@ class CompilerManager {
     return this._terminal.props.cwd
   }
 
-  get nodeVersion () {
-    if (!this._button) {
-      throw new Error('CompilerButton is not instantiated.')
-    }
-    return this._button.props.nodeVersion
-  }
-
-  get compilerVersion () {
-    if (!this._button) {
-      throw new Error('CompilerButton is not instantiated.')
-    }
-    return this._button.props.compilerVersion
-  }
-
   focus () {
     if (this._terminal) {
       this._terminal.focus()
@@ -48,14 +34,15 @@ class CompilerManager {
 
   async build (config = {}) {
     const projectRoot = this.projectRoot
-    const nodeVersion = this.nodeVersion
-    const compilerVersion = this.compilerVersion
 
-    if (config.language === 'pyteal' && !this.compilerVersion) {
+    const nodeVersion = config.compilers?.algorand
+    const pytealVersion = config.compilers?.pyteal
+
+    if (config.language === 'pyteal' && !pytealVersion) {
       notification.error('Build Failed', `Does not have PyTeal compiler.`)
       throw new Error('Does not have PyTeal compiler.')
     }
-    if (!this.nodeVersion) {
+    if (!nodeVersion) {
       notification.error('Build Failed', `Does not have Algorand node. Unable to compiler TEAL.`)
       throw new Error('Does not have Algorand node. Unable to compiler TEAL.')
     }
@@ -65,7 +52,7 @@ class CompilerManager {
 
     let result
     if (config.language === 'pyteal') {
-      let pytealCmd = this.generateDockerPytealBuildCmd(`python ${config.main} > contract.teal`, { projectRoot, compilerVersion })
+      let pytealCmd = this.generateDockerPytealBuildCmd(`python ${config.main} > contract.teal`, { projectRoot, pytealVersion })
       result = await this._terminal.exec(pytealCmd)
       if (result.code) {
         this._button.setState({ building: false })
@@ -110,12 +97,12 @@ class CompilerManager {
     }
   }
 
-  generateDockerPytealBuildCmd(cmd, { compilerVersion, projectRoot }) {
+  generateDockerPytealBuildCmd(cmd, { pytealVersion, projectRoot }) {
     return [
       'docker', 'run', '-t', '--rm', '--name', `pyteal_compiler`,
       '--volume', `"${projectRoot}:/project"`,
       '-w', '/project',
-      `obsidians/pyteal:${compilerVersion}`,
+      `obsidians/pyteal:${pytealVersion}`,
       '/bin/bash', '-c',
       `"${cmd}"`
     ].join(' ')

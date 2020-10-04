@@ -7,7 +7,7 @@ export default async function checkDependencies () {
     const results = await Promise.all([
       dockerChannel.check(),
       instance.node.installed(),
-      compilerManager.channel.installed(),
+      compilerManager.pyteal.installed(),
     ])
     return results.every(x => !!x)
   } catch (e) {

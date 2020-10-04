@@ -72,7 +72,7 @@ export default class Welcome extends PureComponent {
               />
               <ListItemDockerImage
                 ref={this.listItemCompiler}
-                channel={compilerManager.channel}
+                channel={compilerManager.pyteal}
                 title='PyTeal Compiler'
                 subtitle='PyTeal compiler is required to compile PyTeal to Teal.'
                 link='https://hub.docker.com/r/obsidians/pyteal'

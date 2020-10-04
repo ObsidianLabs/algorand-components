@@ -1,4 +1,7 @@
 {
   "language": "teal",
-  "main": "contract.teal"
+  "main": "contract.teal",
+  "compilers": {
+    "algorand": "2.1.6"
+  }
 }
