@@ -69,8 +69,9 @@ export default class CreateInstanceButton extends PureComponent {
           title={`New Instance (${this.props.chain})`}
           textConfirm='Create'
           onConfirm={this.onCreateInstance}
+          onClosed={() => this.setState({ pending: false })}
           pending={this.state.pending}
-          confirmDisabled={!this.state.name || !this.state.selected}
+          confirmDisabled={!this.state.name || !this.state.version}
         >
           <DebouncedFormGroup
             label='Instance name'
