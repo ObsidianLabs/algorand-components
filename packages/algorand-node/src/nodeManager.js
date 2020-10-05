@@ -38,7 +38,10 @@ class NodeManager {
     await this._terminal.exec(runNode)
     const result = await this._terminal.exec(getAlgodToken)
     this._terminal.onLogReceived('\r\n')
-    await this._terminal.exec(streamLogs, { resolveOnFirstLog: true })
+    await this._terminal.exec(streamLogs, {
+      resolveOnFirstLog: true,
+      stopCommand: `docker stop -t 1 algorand-${name}-${version}`
+    })
     
     if (!result.code) {
       return {
@@ -92,10 +95,8 @@ class NodeManager {
     }
   }
 
-  async stop ({ name, version }) {
-    if (this._terminal) {
-      await this._terminal.exec(`docker stop algorand-${name}-${version}`)
-    }
+  async stop () {
+    await this._terminal?.stop()
   }
 }
 
