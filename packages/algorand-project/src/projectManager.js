@@ -2,7 +2,7 @@ import fileOps from '@obsidians/file-ops'
 import notification from '@obsidians/notification'
 import keypairManager from '@obsidians/keypair'
 
-import { ProjectManager } from '@obsidians/workspace'
+import { ProjectManager, BaseProjectManager } from '@obsidians/workspace'
 
 import compilerManager from '@obsidians/algorand-compiler'
 import { signatureProvider } from '@obsidians/algorand-sdk'
@@ -10,10 +10,11 @@ import nodeManager from '@obsidians/algorand-node'
 
 import AlgorandProjectSettings from './AlgorandProjectSettings'
 
+BaseProjectManager.ProjectSettings = AlgorandProjectSettings
+
 class AlgorandProjectManager extends ProjectManager {
   constructor () {
     super()
-    this.ProjectSettings = AlgorandProjectSettings
   }
 
   get settingsFilePath () {

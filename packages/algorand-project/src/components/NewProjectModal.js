@@ -33,7 +33,7 @@ export default class NewProjectModal extends Component {
     this.modal = React.createRef()
     this.path = fileOps.current.path
     this.fs = fileOps.current.fs
-    this.channel = new IpcChannel('algorand-project')
+    this.channel = new IpcChannel('project')
 
     actions.newProjectModal = this
   }
