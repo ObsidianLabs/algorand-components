@@ -12,17 +12,13 @@ import AlgorandProjectSettings from './AlgorandProjectSettings'
 
 BaseProjectManager.ProjectSettings = AlgorandProjectSettings
 
-class AlgorandProjectManager extends ProjectManager {
-  constructor () {
-    super()
+export default class AlgorandProjectManager extends ProjectManager {
+  constructor (project, projectRoot) {
+    super(project, projectRoot)
   }
 
   get settingsFilePath () {
     return this.pathForProjectFile('config.json')
-  }
-
-  get compilerVersion () {
-    return this.project.props.compilerVersion
   }
 
   async compile () {
@@ -113,5 +109,3 @@ class AlgorandProjectManager extends ProjectManager {
     return await algoTxn.push()
   }
 }
-
-export default new AlgorandProjectManager()

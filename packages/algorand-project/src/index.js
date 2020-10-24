@@ -1,8 +1,5 @@
 export { default } from './Project'
 
-export { default as projectManager } from './projectManager'
-
-export { default as TerminalButton } from './bottombar/TerminalButton'
 export { default as AlgorandSelector } from './bottombar/AlgorandSelector'
 export { default as PyTealSelector } from './bottombar/PyTealSelector'
 

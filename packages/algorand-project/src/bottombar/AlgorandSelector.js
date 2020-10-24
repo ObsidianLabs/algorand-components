@@ -1,14 +1,13 @@
 import React from 'react'
 
 import { DockerImageSelector } from '@obsidians/docker'
+import { BaseProjectManager } from '@obsidians/workspace'
 import instance from '@obsidians/algorand-instances'
-
-import projectManager from '../projectManager'
 
 export default () => {
   const [selected, onSelected] = React.useState('')
 
-  React.useEffect(projectManager.effect('settings:compilers.algorand', onSelected), [])
+  React.useEffect(BaseProjectManager.effect('settings:compilers.algorand', onSelected), [])
 
   return (
     <DockerImageSelector
@@ -21,7 +20,7 @@ export default () => {
       modalTitle='Algorand Version Manager'
       downloadingTitle='Downloading Algorand'
       selected={selected}
-      onSelected={v => projectManager.projectSettings?.set('compilers.algorand', v)}
+      onSelected={v => BaseProjectManager.instance.projectSettings?.set('compilers.algorand', v)}
     />
   )
 }

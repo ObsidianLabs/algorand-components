@@ -9,6 +9,7 @@ import {
 
 import {
   WorkspaceContext,
+  BaseProjectManager,
   AbstractProjectSettingsTab,
   ProjectPath,
 } from '@obsidians/workspace'
@@ -17,17 +18,15 @@ import { DockerImageInputSelector } from '@obsidians/docker'
 import instance from '@obsidians/algorand-instances'
 import compilerManager from '@obsidians/algorand-compiler'
 
-import projectManager from '../../projectManager'
-
 export default class ProjectSettingsTab extends AbstractProjectSettingsTab {
   static contextType = WorkspaceContext
 
   componentDidMount () {
-    projectManager.channel.on('settings', this.debouncedUpdate)
+    BaseProjectManager.channel.on('settings', this.debouncedUpdate)
   }
   
   componentWillUnmount () {
-    projectManager.channel.off('settings', this.debouncedUpdate)
+    BaseProjectManager.channel.off('settings', this.debouncedUpdate)
   }
 
   render () {

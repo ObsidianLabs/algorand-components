@@ -4,14 +4,13 @@ import { WorkspaceContext } from '@obsidians/workspace'
 import { ToolbarButton } from '@obsidians/ui-components'
 import { CompilerButton } from '@obsidians/algorand-compiler'
 
-import projectManager from '../../projectManager'
 import TestSelector from './TestSelector'
 
 export default class ProjectToolbar extends PureComponent {
   static contextType = WorkspaceContext
 
   render () {
-    const { projectRoot } = this.context
+    const { projectRoot, projectManager } = this.context
 
     return (
       <React.Fragment>
@@ -19,7 +18,10 @@ export default class ProjectToolbar extends PureComponent {
           className='rounded-0 border-0 flex-none w-5'
           onClick={() => projectManager.compile()}
         />
-        <TestSelector projectRoot={projectRoot} />
+        <TestSelector
+          projectRoot={projectRoot}
+          projectManager={projectManager}
+        />
         <div className='flex-1' />
         <ToolbarButton
           id='settings'

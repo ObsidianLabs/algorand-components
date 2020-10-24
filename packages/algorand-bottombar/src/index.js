@@ -2,7 +2,9 @@ import React from 'react'
 import CacheRoute from 'react-router-cache-route'
 
 import { KeypairButton } from '@obsidians/keypair'
-import { TerminalButton, AlgorandSelector, PyTealSelector } from '@obsidians/algorand-project'
+import { TerminalButton } from '@obsidians/workspace'
+
+import { AlgorandSelector, PyTealSelector } from '@obsidians/algorand-project'
 
 export default function BottomBar (props) {
   return (

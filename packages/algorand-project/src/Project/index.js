@@ -3,7 +3,7 @@ import fileOps from '@obsidians/file-ops'
 import { useBuiltinCustomTabs, modelSessionManager, defaultModeDetector } from '@obsidians/code-editor'
 import compilerManager, { CompilerTerminal } from '@obsidians/algorand-compiler'
 
-import projectManager from '../projectManager'
+import AlgorandProjectManager from '../AlgorandProjectManager'
 
 import ProjectToolbar from './ProjectToolbar'
 import ProjectSettingsTab from './ProjectSettingsTab'
@@ -24,7 +24,7 @@ modelSessionManager.registerModeDetector(filePath => {
 })
 
 Workspace.defaultProps = {
-  projectManager,
+  ProjectManager: AlgorandProjectManager,
   compilerManager,
   ProjectToolbar,
   CompilerTerminal,
