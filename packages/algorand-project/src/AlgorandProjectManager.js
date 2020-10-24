@@ -12,100 +12,107 @@ import AlgorandProjectSettings from './AlgorandProjectSettings'
 
 BaseProjectManager.ProjectSettings = AlgorandProjectSettings
 
-export default class AlgorandProjectManager extends ProjectManager {
-  constructor (project, projectRoot) {
-    super(project, projectRoot)
-  }
-
-  get settingsFilePath () {
-    return this.pathForProjectFile('config.json')
-  }
-
-  async compile () {
-    let settings
-    try {
-      settings = await this.checkSettings()
-    } catch (e) {
-      return false
+function makeProjectManager (Base) {
+  return class AlgorandProjectManager extends Base {
+    constructor (project, projectRoot) {
+      super(project, projectRoot)
     }
 
-    const main = settings.main
-    if (!main) {
-      notification.error('No Main File', 'Please specify a main file in project settings.')
-      return false
+    get settingsFilePath () {
+      return this.pathForProjectFile('config.json')
     }
 
-    await this.project.saveAll()
-    this.toggleTerminal(true)
-
-    try {
-      await compilerManager.build(settings)
-    } catch (e) {
-      return false
-    }
-
-    return true
-  }
-
-  async testTransaction (testFile) {
-    if (!nodeManager.algoSdk) {
-      notification.error('No Running Node', 'Please start an Algorand node first.')
-      return false
-    }
-
-    const path = fileOps.current.path
-    const testFilePath = path.join(this.projectRoot, 'tests', testFile)
-    let testJson = await fileOps.current.readFile(testFilePath)
-
-    const files = {}
-    const regex = /\"(file|base64):([^"]+)\"/g
-    const testFileDir = path.parse(testFilePath).dir
-
-    let match = regex.exec(testJson)
-    while (match) {
-      const type = match[1]
-      let filePath = match[2]
-      if (!path.isAbsolute(filePath)) {
-        filePath = path.join(testFileDir, filePath)
+    async compile () {
+      let settings
+      try {
+        settings = await this.checkSettings()
+      } catch (e) {
+        return false
       }
-      if (!files[filePath]) {
-        files[filePath] = []
-      }
-      files[filePath].push([type, match[0]])
 
-      match = regex.exec(testJson);
+      const main = settings.main
+      if (!main) {
+        notification.error('No Main File', 'Please specify a main file in project settings.')
+        return false
+      }
+
+      await this.project.saveAll()
+      this.toggleTerminal(true)
+
+      try {
+        await compilerManager.build(settings)
+      } catch (e) {
+        return false
+      }
+
+      return true
     }
 
-    for (const filePath in files) {
-      let base64 = ''
+    async testTransaction (testFile) {
+      if (!nodeManager.algoSdk) {
+        notification.error('No Running Node', 'Please start an Algorand node first.')
+        return false
+      }
 
-      files[filePath].forEach(([type, replacing]) => {
-        if (type === 'file') {
-          const content = fileOps.current.fs.readFileSync(filePath, 'utf8')
-          testJson = testJson.replace(replacing, `"${content}"`)
-        } else if (type === 'base64') {
-          if (!base64) {
-            base64 = fileOps.current.fs.readFileSync(filePath, 'base64')
-          }
-          testJson = testJson.replace(replacing, `"${base64}"`)
+      const path = fileOps.current.path
+      const testFilePath = path.join(this.projectRoot, 'tests', testFile)
+      let testJson = await fileOps.current.readFile(testFilePath)
+
+      const files = {}
+      const regex = /\"(file|base64):([^"]+)\"/g
+      const testFileDir = path.parse(testFilePath).dir
+
+      let match = regex.exec(testJson)
+      while (match) {
+        const type = match[1]
+        let filePath = match[2]
+        if (!path.isAbsolute(filePath)) {
+          filePath = path.join(testFileDir, filePath)
         }
-      })
+        if (!files[filePath]) {
+          files[filePath] = []
+        }
+        files[filePath].push([type, match[0]])
+
+        match = regex.exec(testJson);
+      }
+
+      for (const filePath in files) {
+        let base64 = ''
+
+        files[filePath].forEach(([type, replacing]) => {
+          if (type === 'file') {
+            const content = fileOps.current.fs.readFileSync(filePath, 'utf8')
+            testJson = testJson.replace(replacing, `"${content}"`)
+          } else if (type === 'base64') {
+            if (!base64) {
+              base64 = fileOps.current.fs.readFileSync(filePath, 'base64')
+            }
+            testJson = testJson.replace(replacing, `"${base64}"`)
+          }
+        })
+      }
+
+      let txn
+      try {
+        txn = JSON.parse(testJson)
+      } catch (e) {
+        console.warn(e)
+        return
+      }
+
+      const keypairs = (await keypairManager.loadAllKeypairs()).map(k => ({ name: k.name, addr: k.address }))
+      txn.accounts = keypairs.concat(txn.accounts)
+
+      const algoTxn = nodeManager.algoSdk.newTransaction(txn, signatureProvider)
+
+      await algoTxn.sign()
+      return await algoTxn.push()
     }
-
-    let txn
-    try {
-      txn = JSON.parse(testJson)
-    } catch (e) {
-      console.warn(e)
-      return
-    }
-
-    const keypairs = (await keypairManager.loadAllKeypairs()).map(k => ({ name: k.name, addr: k.address }))
-    txn.accounts = keypairs.concat(txn.accounts)
-
-    const algoTxn = nodeManager.algoSdk.newTransaction(txn, signatureProvider)
-
-    await algoTxn.sign()
-    return await algoTxn.push()
   }
+}
+
+export default {
+  Local: makeProjectManager(ProjectManager.Local),
+  Remote: makeProjectManager(ProjectManager.Remote),
 }
