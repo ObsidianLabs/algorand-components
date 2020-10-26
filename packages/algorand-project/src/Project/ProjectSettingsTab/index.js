@@ -15,7 +15,7 @@ import {
 } from '@obsidians/workspace'
 
 import { DockerImageInputSelector } from '@obsidians/docker'
-import instance from '@obsidians/algorand-instances'
+import { instanceChannel } from '@obsidians/algorand-network'
 import compilerManager from '@obsidians/algorand-compiler'
 
 export default class ProjectSettingsTab extends AbstractProjectSettingsTab {
@@ -64,7 +64,7 @@ export default class ProjectSettingsTab extends AbstractProjectSettingsTab {
 
             <h4 className='mt-4'>Compiler</h4>
             <DockerImageInputSelector
-              channel={instance.node}
+              channel={instanceChannel.node}
               disableAutoSelection
               bg='bg-black'
               label='TEAL compiler (integrated in Algorand node)'

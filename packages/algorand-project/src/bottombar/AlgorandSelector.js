@@ -2,7 +2,7 @@ import React from 'react'
 
 import { DockerImageSelector } from '@obsidians/docker'
 import { BaseProjectManager } from '@obsidians/workspace'
-import instance from '@obsidians/algorand-instances'
+import { instanceChannel } from '@obsidians/algorand-network'
 
 export default () => {
   const [selected, onSelected] = React.useState('')
@@ -11,7 +11,7 @@ export default () => {
 
   return (
     <DockerImageSelector
-      channel={instance.node}
+      channel={instanceChannel.node}
       disableAutoSelection
       size='sm'
       icon='fas fa-hammer'

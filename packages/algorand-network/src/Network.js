@@ -6,7 +6,7 @@ import {
 
 import { NodeTerminal } from '@obsidians/algorand-node'
 
-import InstanceList from './InstanceList'
+import InstanceList from './Instance/InstanceList'
 
 const chains = {
   local: 'devnet',
@@ -14,8 +14,8 @@ const chains = {
   mainnet: 'mainnet',
 }
 
-export default function InstanceListWithTerminal (props) {
-  const { active, network = 'testnet', onLifecycle } = props
+export default props => {
+  const { active, network = 'testnet' } = props
   const chain = chains[network]
   return (
     <SplitPane
@@ -24,7 +24,7 @@ export default function InstanceListWithTerminal (props) {
       defaultSize={260}
       minSize={200}
     >
-      <InstanceList chain={chain} onLifecycle={onLifecycle} />
+      <InstanceList chain={chain} />
       <NodeTerminal active={active} />
     </SplitPane>
   )

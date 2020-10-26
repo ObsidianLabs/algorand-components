@@ -7,7 +7,7 @@ import {
 import fileOps from '@obsidians/file-ops'
 import { ListItemDocker, ListItemDockerImage } from '@obsidians/docker'
 
-import instance from '@obsidians/algorand-instances'
+import { instanceChannel } from '@obsidians/algorand-network'
 import compilerManager from '@obsidians/algorand-compiler'
 
 import checkDependencies from './checkDependencies'
@@ -63,7 +63,7 @@ export default class Welcome extends PureComponent {
               />
               <ListItemDockerImage
                 ref={this.listItemNode}
-                channel={instance.node}
+                channel={instanceChannel.node}
                 title='Algorand Node'
                 subtitle='The main software that runs Algorand node and compiles Teal scripts.'
                 link='https://hub.docker.com/r/algorand/stable'

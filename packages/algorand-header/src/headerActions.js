@@ -1,28 +1,4 @@
-import notification from '@obsidians/notification'
 import redux from '@obsidians/redux'
-import nodeManager from '@obsidians/algorand-node'
-
-import { List } from 'immutable'
-
-export const networks = List([
-  // {
-  //   id: 'local',
-  //   group: 'default',
-  //   name: 'Local',
-  //   fullName: 'Local Dev Network',
-  //   icon: 'fas fa-laptop-code',
-  //   notification: 'Switched to <b>Local Dev</b> network.',
-  // },
-  {
-    id: 'testnet',
-    group: 'default',
-    name: 'Testnet',
-    fullName: 'Testnet Network',
-    icon: 'fas fa-laptop-code',
-    notification: 'Switched to <b>Testnet</b> network.',
-  }
-])
-
 
 export class HeaderActions {
   constructor() {
@@ -42,18 +18,8 @@ export class HeaderActions {
     redux.dispatch('REMOVE_ACCOUNT', { network, account })
   }
 
-  async setNetwork (newtorkId) {
-    if (newtorkId === redux.getState().network) {
-      return
-    }
-    const network = networks.find(n => n.id === newtorkId)
-    if (!network) {
-      return
-    }
-    nodeManager.switchNetwork(network)
-    redux.dispatch('SELECT_NETWORK', network.id)
-    notification.success(`Network`, network.notification)
-    this.history.push(`/network/${network.id}`)
+  updateNetwork (networkId) {
+    this.history.push(`/network/${networkId}`)
   }
 }
 
