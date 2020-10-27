@@ -15,9 +15,8 @@ import {
 
 import fileOps from '@obsidians/file-ops'
 import notification from '@obsidians/notification'
+import { actions } from '@obsidians/workspace'
 import { IpcChannel } from '@obsidians/ipc'
-
-import actions from '../actions'
 
 export default class NewProjectModal extends Component {
   constructor (props) {

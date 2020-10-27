@@ -16,7 +16,7 @@ export default function BottomBar (props) {
       </KeypairButton>
       <div className='flex-1' />
       <CacheRoute
-        path={`/guest/:project`}
+        path={`/local/:project`}
         render={() => {
           if (!props.projectValid) {
             return null
@@ -28,7 +28,7 @@ export default function BottomBar (props) {
         }}
       />
       <CacheRoute
-        path={`/guest/:project`}
+        path={`/local/:project`}
         component={TerminalButton}
       />
     </React.Fragment>
