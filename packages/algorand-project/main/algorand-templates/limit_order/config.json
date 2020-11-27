@@ -2,6 +2,6 @@
   "language": "teal",
   "main": "contract.teal",
   "compilers": {
-    "algorand": "2.1.6"
+    "algorand": "2.2.0"
   }
 }

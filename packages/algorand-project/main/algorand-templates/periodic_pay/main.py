@@ -4,9 +4,9 @@ from pyteal import *
 tmpl_fee = Int(1000)
 tmpl_period = Int(1000)
 tmpl_dur = Int(1000)
-tmpl_x = Bytes("base64", <32-byte string>)
+tmpl_x = Bytes("base64", "") # 32-byte string
 tmpl_amt = Int(2000)
-tmpl_rcv = Addr(<receiver address>)
+tmpl_rcv = Addr("") # receiver address
 tmpl_timeout = Int(30000)
 
 periodic_pay_core = And(Txn.type_enum() == Int(1),
@@ -26,4 +26,4 @@ periodic_pay_close = And(Txn.close_remainder_to() == tmpl_rcv,
 
 periodic_pay_escrow = And(periodic_pay_core, Or(periodic_pay_transfer, periodic_pay_close))
 
-print(periodic_pay_escrow.teal())
+print(compileTeal(periodic_pay_escrow(), Mode.Signature))

@@ -1,7 +1,7 @@
 from pyteal import *
 
 #template variables
-tmpl_amt = Int(1000000)
+tmpl_amt = Int(1000000) # equals 1 ALGO
 tmpl_rcv = Addr("") # paste a receiver address
 tmpl_cls = Addr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ")
 tmpl_fv = Int(8000000)
@@ -17,19 +17,20 @@ def dynamic_fee(tmpl_amt=tmpl_amt,
 
     dynamic_fee_core = And(
         Global.group_size() == Int(2),
-        Gtxn.type_enum(0) == Int(1),
+        Gtxn[0].type_enum() == Int(1),
         Txn.group_index() == Int(1),
         Txn.type_enum() == Int(1),
-        Gtxn.amount(0) == Txn.fee(),
-        Gtxn.receiver(0) == Txn.sender(),
+        Gtxn[0].amount() == Txn.fee(),
+        Gtxn[0].receiver() == Txn.sender(),
         Txn.amount() == tmpl_amt,
-        # Txn.receiver() == tmpl_rcv,
+        Txn.receiver() == tmpl_rcv,
         Txn.close_remainder_to() == tmpl_cls,
         # Txn.first_valid() == tmpl_fv,
         # Txn.last_valid() == tmpl_lv,
-        Txn.lease() == tmpl_lease
+        # Txn.lease() == tmpl_lease
     )
 
     return dynamic_fee_core
 
-print(dynamic_fee().teal())
+if __name__ == "__main__":
+    print(compileTeal(dynamic_fee(), Mode.Signature))
