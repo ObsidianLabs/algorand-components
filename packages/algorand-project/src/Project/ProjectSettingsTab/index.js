@@ -88,6 +88,7 @@ export default class ProjectSettingsTab extends AbstractProjectSettingsTab {
                 onSelected={v => this.onChange('compilers.pyteal')(v)}
               />
             }
+            <AbstractProjectSettingsTab.DeleteButton context={this.context} />
           </div>
         </div>
       </div>
