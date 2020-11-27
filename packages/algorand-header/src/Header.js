@@ -56,7 +56,7 @@ export default class Header extends PureComponent {
       {
         route: 'account',
         title: 'Account',
-        icon: 'fa-file-invoice',
+        icon: 'fas fa-file-invoice',
         selected: { id: selectedAccount, name: accountName },
         dropdown: [...dropdownKeypairs, ...dropdownStarred],
         onClickItem: account => headerActions.selectAccount(network.id, account),
