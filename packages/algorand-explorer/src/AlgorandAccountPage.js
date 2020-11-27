@@ -4,7 +4,7 @@ import {
   Screen,
 } from '@obsidians/ui-components'
 
-import nodeManager from '@obsidians/algorand-node'
+import { networkManager } from '@obsidians/algorand-network'
 
 import AlgorandBalance from './AlgorandBalance'
 import AlgorandAssets from './AlgorandAssets'
@@ -34,14 +34,14 @@ export default class AlgorandAccountPage extends PureComponent {
       return
     }
 
-    if (!nodeManager.algoSdk.isValidAddress(value)) {
+    if (!networkManager.sdk?.isValidAddress(value)) {
       this.setState({ error: null, account: null })
       return
     }
 
     let account
     try {
-      account = await nodeManager.algoSdk.accountFrom(value)
+      account = await networkManager.sdk.accountFrom(value)
       this.setState({ error: null, account })
       this.forceUpdate()
     } catch (e) {

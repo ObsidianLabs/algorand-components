@@ -4,7 +4,7 @@ import {
   TableCardRow,
 } from '@obsidians/ui-components'
 
-import nodeManager from '@obsidians/algorand-node'
+import { networkManager } from '@obsidians/algorand-network'
 
 export default class Asset extends PureComponent {
   constructor (props) {
@@ -19,7 +19,7 @@ export default class Asset extends PureComponent {
   }
 
   async getAssetInfo (assetId) {
-    const assetInfo = await nodeManager.algoSdk.getAssetInfo(assetId)
+    const assetInfo = await networkManager.sdk.getAssetInfo(assetId)
     this.setState({ assetInfo })
   }
 

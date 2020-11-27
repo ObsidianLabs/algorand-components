@@ -1,19 +1,10 @@
-import AlgoSdk from '@obsidians/algorand-sdk'
+import { networkManager } from '@obsidians/algorand-network'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 class NodeManager {
   constructor () {
-    this._algoSdk = null
     this._terminal = null
-  }
-
-  set status (v) {
-    this._status = v
-  }
-
-  get algoSdk () {
-    return this._algoSdk
   }
 
   set terminal (v) {
@@ -75,17 +66,7 @@ class NodeManager {
       this._status.setState({ lifecycle })
     }
     if (params) {
-      this._algoSdk = new AlgoSdk(params)
-    } else {
-      this._algoSdk = null
-    }
-  }
-
-  switchNetwork (network) {
-    if (network.url) {
-      this._sdk = new AlgoSdk(network)
-    } else {
-      this._sdk = null
+      networkManager.updateSdk(params)
     }
   }
 

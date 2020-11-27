@@ -4,7 +4,7 @@ import {
   TableCard,
 } from '@obsidians/ui-components'
 
-import nodeManager from '@obsidians/algorand-node'
+import { networkManager } from '@obsidians/algorand-network'
 
 import TransactionRow from './TransactionRow'
 
@@ -28,13 +28,13 @@ export default class AlgorandTransactions extends PureComponent {
 
   refresh = async account => {
     this.setState({ txs: [], loading: true })
-    const { cursor, data: txs } = await nodeManager.algoSdk.getTransactions(account.address)
+    const { cursor, data: txs } = await networkManager.sdk.getTransactions(account.address)
     this.setState({ txs, cursor, hasMore: !!cursor, loading: false })
   }
 
   loadMore = async () => {
     this.setState({ loading: true })
-    const { cursor, data: txs } = await nodeManager.algoSdk.getTransactions(this.props.account.address, this.state.cursor)
+    const { cursor, data: txs } = await networkManager.sdk.getTransactions(this.props.account.address, this.state.cursor)
     this.setState({
       txs: [...this.state.txs, ...txs],
       cursor,

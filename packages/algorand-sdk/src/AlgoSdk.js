@@ -7,6 +7,7 @@ import AlgoTransaction from './AlgoTransaction'
 
 export default class AlgoSdk {
   constructor ({ url, token }) {
+    this.url = url
     const { protocol, hostname, port } = parseUrl(url)
     this.client = new AlgoClient({
       server: `${protocol}//${hostname}`,

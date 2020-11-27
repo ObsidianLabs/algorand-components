@@ -6,7 +6,7 @@ import { ProjectManager, BaseProjectManager } from '@obsidians/workspace'
 
 import compilerManager from '@obsidians/algorand-compiler'
 import { signatureProvider } from '@obsidians/algorand-sdk'
-import nodeManager from '@obsidians/algorand-node'
+import { networkManager } from '@obsidians/algorand-network'
 
 import AlgorandProjectSettings from './AlgorandProjectSettings'
 
@@ -49,7 +49,7 @@ function makeProjectManager (Base) {
     }
 
     async testTransaction (testFile) {
-      if (!nodeManager.algoSdk) {
+      if (!networkManager.sdk) {
         notification.error('No Running Node', 'Please start an Algorand node first.')
         return false
       }
@@ -104,7 +104,7 @@ function makeProjectManager (Base) {
       const keypairs = (await keypairManager.loadAllKeypairs()).map(k => ({ name: k.name, addr: k.address }))
       txn.accounts = keypairs.concat(txn.accounts)
 
-      const algoTxn = nodeManager.algoSdk.newTransaction(txn, signatureProvider)
+      const algoTxn = networkManager.sdk.newTransaction(txn, signatureProvider)
 
       await algoTxn.sign()
       return await algoTxn.push()
