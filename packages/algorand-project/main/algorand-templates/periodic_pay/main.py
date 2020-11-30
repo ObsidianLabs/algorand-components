@@ -26,4 +26,4 @@ periodic_pay_close = And(Txn.close_remainder_to() == tmpl_rcv,
 
 periodic_pay_escrow = And(periodic_pay_core, Or(periodic_pay_transfer, periodic_pay_close))
 
-print(compileTeal(periodic_pay_escrow(), Mode.Signature))
+print(compileTeal(periodic_pay_escrow, Mode.Signature))

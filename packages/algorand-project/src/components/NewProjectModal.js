@@ -8,7 +8,7 @@ NewProjectModal.defaultProps = {
       badge: 'TEAL',
       children: [
         { id: 'empty', display: 'Empty TEAL Contract' },
-        { id: 'htlc', display: 'Hash Time Lock Contract' },
+        { id: 'limit_order', display: 'Limit Order' },
       ],
     },
     {
@@ -17,7 +17,7 @@ NewProjectModal.defaultProps = {
       children: [
         { id: 'dynamic_fee', display: 'Dynamic Fee' },
         { id: 'periodic_pay', display: 'Periodic Payment' },
-        { id: 'limit_order', display: 'Limit Order' },
+        { id: 'htlc', display: 'Hash Time Lock Contract' },
       ],
     },
   ]
