@@ -3,7 +3,7 @@ import keypairManager from '@obsidians/keypair'
 
 export default function signatureProvider (addr) {
   return async ({ algoTxn, logicSig, raw = false }) => {
-    const mnemonic = await keypairManager.getSigner(addr)
+    const mnemonic = await keypairManager.getSecret(addr)
     const key = algosdk.mnemonicToSecretKey(mnemonic)
 
     if (logicSig) {
