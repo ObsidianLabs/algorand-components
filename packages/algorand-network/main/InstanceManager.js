@@ -20,9 +20,9 @@ class InstanceManager extends IpcChannel {
 
   async createDevInstance({ name, version, address, chain }) {
     await this.exec(`docker volume create --label version=${version},chain=${chain} algorand-${name}`)
-    await this.exec(`docker run --rm -it -v algorand-${name}:/data algorand/stable:${version} /bin/bash -c 'cp genesisfiles/${chain}/genesis.json /data/genesis.json'`)
+    await this.exec(`docker run --rm -i -v algorand-${name}:/data algorand/stable:${version} /bin/bash -c 'cp genesisfiles/${chain}/genesis.json /data/genesis.json'`)
     
-    await this.exec(`docker run -d --rm -it --name algorand-config-${name} -v algorand-${name}:/data algorand/stable:${version} /bin/bash`)
+    await this.exec(`docker run -d --rm -i --name algorand-config-${name} -v algorand-${name}:/data algorand/stable:${version} /bin/bash`)
     // await this.exec(`docker cp algorand-config-${name}:/data/genesis.json /tmp/genesis.json`)
 
     // let genesis = fs.readFileSync(`/tmp/genesis.json`, 'utf8')
@@ -43,14 +43,14 @@ class InstanceManager extends IpcChannel {
 
   async createInstance({ name, version, chain }) {
     await this.exec(`docker volume create --label version=${version},chain=${chain} algorand-${name}`)
-    await this.exec(`docker run --rm -it -v algorand-${name}:/data algorand/stable:${version} /bin/bash -c 'cp genesisfiles/${chain}/genesis.json /data/genesis.json'`)
+    await this.exec(`docker run --rm -i -v algorand-${name}:/data algorand/stable:${version} /bin/bash -c 'cp genesisfiles/${chain}/genesis.json /data/genesis.json'`)
 
     const subFolder = `${chain}-v1.0`
 
-    await this.exec(`tar xvf latest.tar.gz -C data/${subFolder}`, { cwd: '/tmp/algorand-snapshot' })
+    await this.exec(`tar xf latest.tar.gz -C data/${subFolder}`, { cwd: '/tmp/algorand-snapshot' })
     // await this.exec(`rm -rf algorand-snapshot`, { cwd: '/tmp' })
 
-    await this.exec(`docker run -d --rm -it --name algorand-config-${name} -v algorand-${name}:/data algorand/stable:${version} /bin/bash`)
+    await this.exec(`docker run -d --rm -i --name algorand-config-${name} -v algorand-${name}:/data algorand/stable:${version} /bin/bash`)
     await this.exec(`docker cp /tmp/algorand-snapshot/data/${subFolder} algorand-config-${name}:/data/${subFolder}`)
     await this.exec(`docker stop algorand-config-${name}`)
   }
