@@ -12,7 +12,7 @@ export default class AlgoSdk {
     this.client = new AlgoClient({
       server: `${protocol}//${hostname}${pathname}`,
       port,
-      token,
+      token: token || {},
     })
     this.assets = {}
   }
