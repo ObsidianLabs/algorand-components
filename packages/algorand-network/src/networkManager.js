@@ -1,6 +1,7 @@
 import notification from '@obsidians/notification'
 import redux from '@obsidians/redux'
 import Sdk from '@obsidians/algorand-sdk'
+import headerActions from '@obsidians/header'
 
 import { getCachingKeys, dropByCacheKey } from 'react-router-cache-route'
 
@@ -24,18 +25,13 @@ class NetworkManager {
     this._sdk = new Sdk(params)
   }
 
-  async setNetwork (networkId) {
-    if (networkId === redux.getState().network) {
+  async setNetwork (network) {
+    if (!network || network.id === redux.getState().network) {
       return
     }
 
     const cachingKeys = getCachingKeys()
     cachingKeys.filter(key => key.startsWith('contract-') || key.startsWith('account-')).forEach(dropByCacheKey)
-
-    const network = networks.find(n => n.id === networkId)
-    if (!network) {
-      return
-    }
 
     this.network = network
     if (network.url) {
@@ -46,6 +42,7 @@ class NetworkManager {
 
     redux.dispatch('SELECT_NETWORK', network.id)
     notification.success(`Network`, network.notification)
+    headerActions.updateNetwork(network.id)
   }
 }
 
