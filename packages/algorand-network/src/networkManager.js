@@ -10,6 +10,8 @@ import networks from './networks'
 class NetworkManager {
   constructor () {
     this._sdk = null
+    this.network = undefined
+    this.networks = []
   }
 
   get sdk () {
@@ -25,7 +27,7 @@ class NetworkManager {
     this._sdk = new Sdk(params)
   }
 
-  async setNetwork (network, redirect = true) {
+  async setNetwork (network, { redirect = true, notify = true }) {
     if (!network || network.id === redux.getState().network) {
       return
     }
@@ -41,7 +43,9 @@ class NetworkManager {
     }
 
     redux.dispatch('SELECT_NETWORK', network.id)
-    notification.success(`Network`, network.notification)
+    if (notify) {
+      notification.success(`Network`, network.notification)
+    }
     if (redirect) {
       headerActions.updateNetwork(network.id)
     }
