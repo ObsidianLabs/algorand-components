@@ -54,7 +54,7 @@ export default class RemoteNetwork extends PureComponent {
       <div className='d-flex flex-1 flex-column overflow-auto'>
         <div className='d-flex'>
           <div className='col-6 p-0 border-right-black'>
-            <TableCard title={`CKB Network (${chain})`}>
+            <TableCard title={`Algorand Network (${chain})`}>
               <TableCardRow
                 name='Node URL'
                 badge={networkManager.sdk?.url}
