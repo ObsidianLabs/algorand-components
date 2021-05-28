@@ -4,6 +4,7 @@ import Navbar from '@obsidians/navbar'
 import keypairManager from '@obsidians/keypair'
 import { NewProjectModal, navbarItem } from '@obsidians/algorand-project'
 import { networkManager } from '@obsidians/algorand-network'
+import headerActions from './headerActions'
 
 export default class Header extends PureComponent {
   constructor (props) {
