@@ -27,7 +27,7 @@ class NetworkManager {
     this._sdk = new Sdk(params)
   }
 
-  async setNetwork (network, { redirect = true, notify = true }) {
+  async setNetwork (network, { redirect = true, notify = true } = {}) {
     if (!network || network.id === redux.getState().network) {
       return
     }
