@@ -2,6 +2,7 @@ import { DockerImageChannel } from '@obsidians/docker'
 import notification from '@obsidians/notification'
 import fileOps from '@obsidians/file-ops'
 import algosdk from 'algosdk'
+import platform from '@obsidians/platform'
 
 class CompilerManager {
   constructor () {
@@ -52,8 +53,12 @@ class CompilerManager {
 
     let result
     if (config.language === 'pyteal') {
-      let pytealCmd = this.generateDockerPytealBuildCmd(`python ${config.main} > contract.teal`, { projectRoot, pytealVersion })
-      result = await this._terminal.exec(pytealCmd)
+      const rawCmd = `python ${config.main} > contract.teal`
+      let pytealCmd = this.generateDockerPytealBuildCmd(rawCmd, { projectRoot, pytealVersion })
+      result = await this._terminal.exec(platform.isDesktop ? pytealCmd : rawCmd, {
+        image: `obsidians/pyteal:${pytealVersion}`,
+        language: config.language
+      })
       if (result.code) {
         this._button.setState({ building: false })
         this.notification.dismiss()
@@ -63,8 +68,12 @@ class CompilerManager {
     }
 
     const tealFile = config.language === 'teal' ? config.main : 'contract.teal'
-    let tealCmd = this.generateDockerTealBuildCmd(`/root/node/goal clerk compile ${tealFile}`, { projectRoot, nodeVersion })
-    result = await this._terminal.exec(tealCmd)
+    const rawCmd = `/root/node/goal clerk compile ${tealFile}`
+    let tealCmd = this.generateDockerTealBuildCmd(rawCmd, { projectRoot, nodeVersion })
+    result = await this._terminal.exec(platform.isDesktop ? tealCmd : rawCmd, {
+      image: `algorand/stable:${nodeVersion}`,
+      language: config.language
+    })
     if (result.code) {
       this._button.setState({ building: false })
       this.notification.dismiss()
@@ -82,7 +91,7 @@ class CompilerManager {
 
     notification.success('Build Successful', `Algorand script is built.`)
   }
-  
+
   async buildLogicSig (projectRoot) {
     const compiledTealFile = fileOps.current.path.join(projectRoot, 'contract.teal.tok')
     const compiledTeal = await fileOps.current.readFile(compiledTealFile, 'base64')
