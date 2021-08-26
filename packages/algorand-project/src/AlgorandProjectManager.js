@@ -55,7 +55,7 @@ function makeProjectManager (Base) {
       }
 
       const path = fileOps.current.path
-      const testFilePath = path.join(this.projectRoot, 'tests', testFile)
+      const testFilePath = this.pathForProjectFile(`tests/${testFile}`)
       let testJson = await fileOps.current.readFile(testFilePath)
 
       const files = {}

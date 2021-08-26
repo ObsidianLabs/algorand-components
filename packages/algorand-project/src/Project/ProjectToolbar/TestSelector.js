@@ -9,6 +9,7 @@ import {
 } from '@obsidians/ui-components'
 
 import fileOps from '@obsidians/file-ops'
+import platform from '@obsidians/platform'
 import notification from '@obsidians/notification'
 
 export default class TestSelector extends PureComponent {
@@ -29,8 +30,16 @@ export default class TestSelector extends PureComponent {
 
   refreshTestFiles = async () => {
     const testFolder = fileOps.current.path.join(this.props.projectRoot, 'tests')
-    let files = fileOps.current.fs.readdirSync(testFolder)
-    files = files.filter(file => file.endsWith('.json'))
+    console.log(this.props.projectManager);
+    let files
+    if (platform.isDesktop) {
+      files = fileOps.current.fs.readdirSync(testFolder)
+      files = files.filter(file => file.endsWith('.json'))
+    } else {
+      const { prefix, userId, projectId } = this.props.projectManager
+      files = await fileOps.current.fs.list(`${prefix}/${userId}/${projectId}/tests`)
+      files = files.map(file => file.name).filter(file => file.endsWith('.json'))
+    }
     let selected = files[0]
     if (files.indexOf(this.state.selected) > -1) {
       selected = this.state.selected

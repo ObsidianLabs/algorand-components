@@ -23,4 +23,13 @@ NewProjectModal.defaultProps = {
   ]
 }
 
-export default NewProjectModal
+export default  class ExtendedNewProjectModal extends NewProjectModal {
+  async createProject (options) {
+    if (this.props.createProject) {
+      const createProject = this.props.createProject.bind(this)
+      return await createProject(options)
+    } else {
+      return await super.createProject(options)
+    }
+  }
+}
