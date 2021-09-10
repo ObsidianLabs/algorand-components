@@ -59,21 +59,16 @@ class CompilerManager {
         image: `obsidians/pyteal:${pytealVersion}`,
         language: config.language
       })
-      if (result.code) {
-        this._button.setState({ building: false })
-        this.notification.dismiss()
-        notification.error('Build Failed', `Code has errors.`)
-        throw new Error(result.logs)
-      }
+    } else if (config.language === 'teal') {
+      const tealFile = config.language === 'teal' ? config.main : 'contract.teal'
+      const rawCmd = `/root/node/goal clerk compile ${tealFile}`
+      let tealCmd = this.generateDockerTealBuildCmd(rawCmd, { projectRoot, nodeVersion })
+      result = await this._terminal.exec(platform.isDesktop ? tealCmd : rawCmd, {
+        image: `algorand/stable:${nodeVersion}`,
+        language: config.language
+      })
     }
 
-    const tealFile = config.language === 'teal' ? config.main : 'contract.teal'
-    const rawCmd = `/root/node/goal clerk compile ${tealFile}`
-    let tealCmd = this.generateDockerTealBuildCmd(rawCmd, { projectRoot, nodeVersion })
-    result = await this._terminal.exec(platform.isDesktop ? tealCmd : rawCmd, {
-      image: `algorand/stable:${nodeVersion}`,
-      language: config.language
-    })
     if (result.code) {
       this._button.setState({ building: false })
       this.notification.dismiss()
