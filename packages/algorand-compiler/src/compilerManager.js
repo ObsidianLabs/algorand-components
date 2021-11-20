@@ -53,21 +53,21 @@ class CompilerManager {
 
     let result
     if (config.language === 'pyteal') {
-      const rawCmd = `python ${config.main} > contract.teal`
+      const rawCmd = `'python ${config.main} > contract.teal'`
       let pytealCmd = this.generateDockerPytealBuildCmd(rawCmd, { projectRoot, pytealVersion })
       result = await this._terminal.exec(platform.isDesktop ? pytealCmd : rawCmd, {
         image: `obsidians/pyteal:${pytealVersion}`,
         language: config.language
       })
-    } else if (config.language === 'teal') {
-      const tealFile = config.language === 'teal' ? config.main : 'contract.teal'
-      const rawCmd = `/root/node/goal clerk compile ${tealFile}`
-      let tealCmd = this.generateDockerTealBuildCmd(rawCmd, { projectRoot, nodeVersion })
-      result = await this._terminal.exec(platform.isDesktop ? tealCmd : rawCmd, {
-        image: `algorand/stable:${nodeVersion}`,
-        language: config.language
-      })
     }
+
+    const tealFile = config.language === 'teal' ? config.main : 'contract.teal'
+    const rawCmd = `'/root/node/goal clerk compile ${tealFile}'`
+    let tealCmd = this.generateDockerTealBuildCmd(rawCmd, { projectRoot, nodeVersion })
+    result = await this._terminal.exec(platform.isDesktop ? tealCmd : rawCmd, {
+      image: `algorand/stable:${nodeVersion}`,
+      language: config.language
+    })
 
     if (result.code) {
       this._button.setState({ building: false })
